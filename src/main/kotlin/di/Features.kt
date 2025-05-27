@@ -14,4 +14,10 @@ val features = buildFeatures {
         strategy { values -> 庭院点赞(values["id"]!!) }
         cutoff { values -> { it >= values["count"]!!.toInt() } }
     }
+
+    feature {
+        title { "账号初始化激活" }
+        description { "V206 + V316 + V900" }
+        strategy { 账号激活() }
+    }
 }

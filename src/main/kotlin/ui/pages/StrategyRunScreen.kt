@@ -2,40 +2,26 @@ package ui.pages
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.AccountTree
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.DataObject
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.unit.dp
 import components.MedalTheme
-import components.components.AlertDialog
-import components.components.Badge
-import components.components.Button
-import components.components.ButtonVariant
-import components.components.HorizontalDivider
-import components.components.Icon
-import components.components.IconButton
-import components.components.IconButtonVariant
-import components.components.Text
-import components.components.VerticalDivider
+import components.components.*
 import components.components.card.Card
 import components.components.card.CardDefaults
 import components.components.card.DashBoardCard
-import components.components.card.ElevatedCard
-import components.contentColorFor
 import data.AppSettings
 import data.SettingsDataStore
 import io.github.smfdrummer.medal_app_desktop.ui.utils.User
@@ -49,6 +35,7 @@ import io.github.smfdrummer.utils.json.jsonWith
 import io.github.smfdrummer.utils.strategy.ContextCallback
 import io.github.smfdrummer.utils.strategy.StrategyConfig
 import io.github.smfdrummer.utils.strategy.StrategyException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
 import org.koin.compose.getKoin
@@ -56,6 +43,10 @@ import org.koin.compose.viewmodel.koinViewModel
 import soup.compose.material.motion.animation.materialSharedAxisXIn
 import soup.compose.material.motion.animation.materialSharedAxisXOut
 import soup.compose.material.motion.animation.rememberSlideDistance
+import components.components.snackbar.SnackbarManager
+import java.awt.Toolkit
+import java.awt.datatransfer.Clipboard
+import java.awt.datatransfer.StringSelection
 
 @Composable
 fun StrategyRunScreen(
@@ -65,12 +56,47 @@ fun StrategyRunScreen(
     additionalCutoff: ((Int) -> Boolean)? = null
 ) {
     val scope = rememberCoroutineScope()
+    val clipboard = Toolkit.getDefaultToolkit().systemClipboard
     val settingsDataStore = getKoin().get<SettingsDataStore>()
     val settings by settingsDataStore.settings.collectAsState(initial = AppSettings())
 
     val strategyViewModel: StrategyViewModel = koinViewModel()
     val callbackList by strategyViewModel.callbackList.collectAsState()
     val runningStatus by strategyViewModel.runningStatus.collectAsState()
+
+    val listState = rememberLazyListState()
+    
+    // 计算是否在底部
+    val isAtBottom = remember {
+        derivedStateOf {
+            if (callbackList.isEmpty()) true
+            else {
+                val layoutInfo = listState.layoutInfo
+                val visibleItemsInfo = layoutInfo.visibleItemsInfo
+                if (visibleItemsInfo.isEmpty()) {
+                    false
+                } else {
+                    // 获取最后一个可见项
+                    val lastItem = visibleItemsInfo.last()
+                    // 获取最后一个可见项的底部位置
+                    val lastItemBottom = lastItem.offset + lastItem.size
+                    // 获取可视区域的总高度
+                    val viewportHeight = layoutInfo.viewportSize.height
+                    // 增加容差值，设置为 50dp
+                    val tolerance = 50
+                    // 如果最后一个可见项的底部位置接近或等于可视区域高度，则认为在底部
+                    lastItemBottom >= viewportHeight - tolerance
+                }
+            }
+        }
+    }
+    
+    // 自动滚动到底部
+    LaunchedEffect(callbackList.size) {
+        if (callbackList.isNotEmpty() && isAtBottom.value) {
+            listState.animateScrollToItem(callbackList.size - 1)
+        }
+    }
 
     // 设置当前策略信息
     LaunchedEffect(Unit) {
@@ -102,9 +128,12 @@ fun StrategyRunScreen(
 
     val contextCallback = remember {
         object : ContextCallback {
-            override fun onPacketStart(packetId: String) {
+            override fun onPacketStart(packetId: String, request: JsonObject) {
                 currentPacketId = packetId
-                strategyViewModel.sendCallback(currentPacketId, CardStatus.NORMAL, "开始执行")
+                strategyViewModel.sendCallback(currentPacketId, CardStatus.NORMAL, jsonWith(
+                        JsonFeature.IsLenient
+                    ).encodeToString(request)
+                )
             }
 
             override fun onPacketSuccess(packetId: String, response: JsonObject) {
@@ -188,16 +217,47 @@ fun StrategyRunScreen(
 
         HorizontalDivider()
         Row {
-            LazyColumn(
-                modifier = Modifier.weight(1f).fillMaxHeight().padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(callbackList) { callback ->
-                    StrategyCallbackCard(
-                        callback.packetId,
-                        callback.status,
-                        callback.content,
-                    )
+            Box(modifier = Modifier.weight(1f)) {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxHeight().padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(callbackList) { callback ->
+                        StrategyCallbackCard(
+                            modifier = Modifier.clickable {
+                                val selection = StringSelection(callback.content)
+                                clipboard.setContents(selection, null)
+                                SnackbarManager.showSnackbar("已复制到剪贴板")
+                            },
+                            clipboard = clipboard,
+                            packetId = callback.packetId,
+                            status = callback.status,
+                            content = callback.content,
+                        )
+                    }
+                }
+                
+                // 当不在底部时显示 FAB
+                if (!isAtBottom.value) {
+                    FloatingActionButton(
+                        containerColor = MedalTheme.colors.primary,
+                        contentColor = MedalTheme.colors.onPrimary,
+                        onClick = {
+                            scope.launch {
+                                listState.animateScrollToItem(callbackList.size - 1)
+                            }
+                        },
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(16.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            tint = MedalTheme.colors.onPrimary,
+                            contentDescription = "滚动到底部"
+                        )
+                    }
                 }
             }
             VerticalDivider()
@@ -259,7 +319,7 @@ fun StrategyRunScreen(
                         enabled = runningStatus == RunningStatus.PENDING,
                         loading = runningStatus == RunningStatus.RUNNING,
                         onClick = {
-                            scope.launch {
+                            scope.launch(Dispatchers.IO) {
                                 strategyViewModel.setRunning(RunningStatus.RUNNING)
                                 strategy.runWith(
                                     userPath = accountPath,
@@ -291,6 +351,8 @@ fun StrategyRunScreen(
 
 @Composable
 private fun StrategyCallbackCard(
+    modifier: Modifier = Modifier,
+    clipboard: Clipboard,
     packetId: String? = null,
     status: CardStatus,
     content: String,
@@ -304,7 +366,7 @@ private fun StrategyCallbackCard(
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = containerColor.copy(0.4f),
             contentColor = MedalTheme.colors.onBackground

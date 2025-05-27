@@ -3,6 +3,8 @@ package ui.pages
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
@@ -67,46 +69,53 @@ fun FeaturesScreen(
             title = "选择运行账号库",
             text = "选择要运行${selectedStrategy?.toString()}策略的账号库"
         ) {
-            if (settings.accounts.isEmpty()) {
-                Text(
-                    "请先在账号页面添加账号库",
-                    style = MedalTheme.typography.body2,
-                    color = MedalTheme.colors.error
-                )
-            } else {
-                settings.accounts
-                    .map { path -> File(path) }
-                    .sortedByDescending { it.lastModified() }
-                    .forEach { file ->
-                        Button(
-                            modifier = Modifier.fillMaxWidth(),
-                            variant = ButtonVariant.PrimaryGhost,
-                            onClick = {
-                                accountDialogVisible = false
-                                onNavigateToStrategyRun(file.absolutePath, selectedStrategy!!, additionalCutoff)
-                            }
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (settings.accounts.isEmpty()) {
+                    Text(
+                        "请先在账号页面添加账号库",
+                        style = MedalTheme.typography.body2,
+                        color = MedalTheme.colors.error
+                    )
+                } else {
+                    settings.accounts
+                        .map { path -> File(path) }
+                        .sortedByDescending { it.lastModified() }
+                        .forEach { file ->
+                            Button(
+                                modifier = Modifier.fillMaxWidth(),
+                                variant = ButtonVariant.PrimaryGhost,
+                                onClick = {
+                                    accountDialogVisible = false
+                                    onNavigateToStrategyRun(file.absolutePath, selectedStrategy!!, additionalCutoff)
+                                }
                             ) {
-                                Text(
-                                    text = file.name,
-                                    style = MedalTheme.typography.body1
-                                )
-                                Text(
-                                    text = when {
-                                        file.length() < 1024 -> "${file.length()} B"
-                                        file.length() < 1024 * 1024 -> "${file.length() / 1024} KB"
-                                        else -> "${file.length() / (1024 * 1024)} MB"
-                                    },
-                                    style = MedalTheme.typography.body2,
-                                    color = MedalTheme.colors.onSurface.copy(0.6f)
-                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(8.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = file.name,
+                                        style = MedalTheme.typography.body1
+                                    )
+                                    Text(
+                                        text = when {
+                                            file.length() < 1024 -> "${file.length()} B"
+                                            file.length() < 1024 * 1024 -> "${file.length() / 1024} KB"
+                                            else -> "${file.length() / (1024 * 1024)} MB"
+                                        },
+                                        style = MedalTheme.typography.body2,
+                                        color = MedalTheme.colors.onSurface.copy(0.6f)
+                                    )
+                                }
                             }
                         }
-                    }
+                }
             }
         }
     }

@@ -37,7 +37,6 @@ object SnackbarManager {
 
 @Composable
 fun rememberSnackbarHostState(): SnackbarHostState {
-    val scope = rememberCoroutineScope()
     val state = remember { SnackbarHostState() }
     
     // 设置全局 SnackbarHostState

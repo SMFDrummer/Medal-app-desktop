@@ -15,6 +15,7 @@ import kotlinx.serialization.Required
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonPrimitive
 import java.io.File
 
 @Serializable
@@ -27,7 +28,7 @@ data class User(
     val phone: String? = null,
     var password: String? = null,
     val token: String? = null,
-    val credential: Credential? = null,
+    var credential: Credential? = null,
     var activate: Boolean = true,
     var banned: Boolean = false,
 ) {
@@ -62,75 +63,70 @@ suspend fun StrategyConfig.runWith(
     for (user in data.users.filter { it.activate && !it.banned }) {
         if (additionalCutoff?.invoke(successCounter.get()) == true) { break }
         onUserChanged(user)
+        val context = StrategyContext(contextCallback).apply {
+            user.credential?.let {
+                variables["pi"] = primitive { it.personalId }
+                variables["sk"] = primitive { it.securityKey }
+                variables["ui"] = primitive { it.userId }
+            }
+        }
         runCatching {
             executeWith(
                 userProvider = when (channel) {
-                    -1 -> IOSProvider(user.userId.content)
-                    else -> OfficialProvider(user.userId.content, user.password!!.getMD5())
+                    -1 -> if (user.userId.content.isNotEmpty())
+                        IOSProvider(user.userId.content) else null
+                    else -> if (user.userId.content.isNotEmpty() && !user.password.isNullOrEmpty())
+                        OfficialProvider(user.userId.content, user.password!!.getMD5()) else null
                 },
-                context = StrategyContext(contextCallback).apply {
-                    user.credential?.let {
-                        variables["pi"] = primitive { it.personalId }
-                        variables["sk"] = primitive { it.securityKey }
-                        variables["ui"] = primitive { it.userId }
-                    }
-                }
+                context = context
             ).fold(
                 { error ->
                     when (error) {
                         is StrategyException.UnexpectedResponseCode -> {
                             if (error.actual == 20507) {
                                 user.banned = true
-                                fileMutex.withLock {
-                                    file.writeText(
-                                        jsonWith(
-                                            JsonFeature.PrettyPrint,
-                                            JsonFeature.ImplicitNulls,
-                                            JsonFeature.IgnoreUnknownKeys
-                                        ).encodeToString(data)
-                                    )
-                                }
                             }
                             onStrategyException(error)
                         }
 
                         else -> onStrategyException(error)
                     }
+                    error(error)
                 },
                 { success ->
                     user.activate = false
-                    fileMutex.withLock {
-                        file.writeText(
-                            jsonWith(
-                                JsonFeature.PrettyPrint,
-                                JsonFeature.ImplicitNulls,
-                                JsonFeature.IgnoreUnknownKeys
-                            ).encodeToString(data)
-                        )
-                    }
                 }
             )
         }.onFailure { error ->
             when (error) {
                 is IllegalStateException -> {
-                    // 处理密码缺失或格式错误
-                    user.password = null
+                    if (error.message?.contains("密码错误") == true) user.password = null
                     user.activate = false
-                    fileMutex.withLock {
-                        file.writeText(
-                            jsonWith(
-                                JsonFeature.PrettyPrint,
-                                JsonFeature.ImplicitNulls,
-                                JsonFeature.IgnoreUnknownKeys
-                            ).encodeToString(data)
-                        )
-                    }
                 }
 
                 else -> onError(error)
             }
         }.onSuccess {
             successCounter.incrementAndGet()
+        }
+        with(context.variables) {
+            // forEach { (k, v) -> println("$k: $v") }
+            if (containsKey("pi") && containsKey("sk") && containsKey("ui")) {
+                user.credential = User.Credential(
+                    personalId = get("pi")!!.jsonPrimitive.content,
+                    securityKey = get("sk")!!.jsonPrimitive.content,
+                    userId = get("ui")!!.jsonPrimitive.content
+                )
+            }
+        }
+        fileMutex.withLock {
+            file.writeText(
+                jsonWith(
+                    JsonFeature.PrettyPrint,
+                    JsonFeature.ImplicitNulls,
+                    JsonFeature.IgnoreUnknownKeys
+                ).encodeToString(data)
+            )
         }
     }
 }.onFailure { error ->

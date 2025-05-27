@@ -201,7 +201,6 @@ fun AccountScreen() {
             onClick = {
                 val fileChooser = JFileChooser().apply {
                     isMultiSelectionEnabled = true
-                    fileFilter = FileNameExtensionFilter("所有文件", "*")
                 }
 
                 if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
