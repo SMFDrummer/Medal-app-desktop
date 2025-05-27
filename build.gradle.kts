@@ -73,6 +73,7 @@ compose.desktop {
                 shortcut = true
                 perUserInstall = true
                 dirChooser = true
+                upgradeUuid = "f3711667-91a9-4535-8c0b-d61ac7499a2d"
                 iconFile.set(project.file("icons/ic_launcher.ico"))
             }
 
