@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-SNAPSHOT">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/workflow.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/workflow.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
-    </list>
+    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-SNAPSHOT" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,17 +31,18 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Medal-app-desktop" type="f1a62948:ProjectNode" />
+                <item name="Medal-app-desktop" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Medal-app-desktop" type="f1a62948:ProjectNode" />
+                <item name="Medal-app-desktop" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Medal-app-desktop" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Medal-app-desktop" type="f1a62948:ProjectNode" />
+                <item name="Medal-app-desktop" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="compose desktop" type="c8890929:TasksNode$1" />
               </path>
@@ -68,6 +64,7 @@
   <component name="Git.Settings">
     <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -92,6 +89,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Gradle.Medal-app-desktop [clean].executor": "Run",
+    "Gradle.Medal-app-desktop [packageDistributionForCurrentOS].executor": "Run",
     "Gradle.Medal-app-desktop [packageMsi].executor": "Run",
     "Gradle.Preview: MainKt.App.executor": "Run",
     "Gradle.Preview: ui.MedalAppKt.MedalApp.executor": "Run",
@@ -102,7 +100,6 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "android.gradle.sync.needed": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/smfdrummer/IdeaProjects/Medal-app-desktop/src/main/resources",
     "node.js.detected.package.eslint": "true",
@@ -131,7 +128,7 @@
       <recent name="io.github.smfdrummer.medal_app_desktop.components.components.card" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.MainKt">
+  <component name="RunManager" selected="Gradle.Medal-app-desktop [packageDistributionForCurrentOS]">
     <configuration name="Medal-app-desktop [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -144,6 +141,28 @@
         <option name="taskNames">
           <list>
             <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="Medal-app-desktop [packageDistributionForCurrentOS]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="packageDistributionForCurrentOS" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -185,6 +204,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Medal-app-desktop [packageDistributionForCurrentOS]" />
         <item itemvalue="Kotlin.MainKt" />
         <item itemvalue="Gradle.Medal-app-desktop [clean]" />
         <item itemvalue="Gradle.Medal-app-desktop [packageMsi]" />
@@ -220,7 +240,7 @@
       <workItem from="1748222705610" duration="17482000" />
       <workItem from="1748264732133" duration="17149000" />
       <workItem from="1748307937081" duration="657000" />
-      <workItem from="1748314230557" duration="3808000" />
+      <workItem from="1748314230557" duration="6798000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -238,7 +258,47 @@
       <option name="project" value="LOCAL" />
       <updated>1748316270571</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="1.0.0-SNAPSHOT">
+      <option name="closed" value="true" />
+      <created>1748320585672</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1748320585672</updated>
+    </task>
+    <task id="LOCAL-00004" summary="1.0.0-SNAPSHOT">
+      <option name="closed" value="true" />
+      <created>1748320644355</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1748320644355</updated>
+    </task>
+    <task id="LOCAL-00005" summary="1.0.0-SNAPSHOT">
+      <option name="closed" value="true" />
+      <created>1748322735955</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1748322735955</updated>
+    </task>
+    <task id="LOCAL-00006" summary="1.0.0-SNAPSHOT">
+      <option name="closed" value="true" />
+      <created>1748323017532</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1748323017532</updated>
+    </task>
+    <task id="LOCAL-00007" summary="1.0.0-SNAPSHOT">
+      <option name="closed" value="true" />
+      <created>1748325348345</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1748325348345</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

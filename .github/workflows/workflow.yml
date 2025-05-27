@@ -7,10 +7,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout desktop repo
@@ -39,7 +39,15 @@ jobs:
 
       - name: Build native distributions
         working-directory: Medal-app-desktop
-        run: ./gradlew packageDistributionForCurrentOS
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            ./gradlew packageDeb
+          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            ./gradlew packageMsi packageExe
+          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            ./gradlew packageDmg
+          fi
+        shell: bash
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -66,9 +74,9 @@ jobs:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
           files: |
-            artifacts/**/**/*.msi
-            artifacts/**/**/*.exe
-            artifacts/**/**/*.deb
-            artifacts/**/**/*.dmg
+            artifacts/**/*.msi
+            artifacts/**/*.exe
+            artifacts/**/*.deb
+            artifacts/**/*.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
