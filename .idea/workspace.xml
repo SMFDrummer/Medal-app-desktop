@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-SNAPSHOT">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/workflow.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/workflow.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,6 +102,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "android.gradle.sync.needed": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/smfdrummer/IdeaProjects/Medal-app-desktop/src/main/resources",
     "node.js.detected.package.eslint": "true",
@@ -127,7 +131,7 @@
       <recent name="io.github.smfdrummer.medal_app_desktop.components.components.card" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Medal-app-desktop [packageMsi]">
+  <component name="RunManager" selected="Kotlin.MainKt">
     <configuration name="Medal-app-desktop [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -181,9 +185,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Medal-app-desktop [packageMsi]" />
         <item itemvalue="Kotlin.MainKt" />
         <item itemvalue="Gradle.Medal-app-desktop [clean]" />
+        <item itemvalue="Gradle.Medal-app-desktop [packageMsi]" />
       </list>
     </recent_temporary>
   </component>
@@ -216,7 +220,7 @@
       <workItem from="1748222705610" duration="17482000" />
       <workItem from="1748264732133" duration="17149000" />
       <workItem from="1748307937081" duration="657000" />
-      <workItem from="1748314230557" duration="1208000" />
+      <workItem from="1748314230557" duration="3808000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -226,7 +230,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748308161330</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="1.0.0-SNAPSHOT">
+      <option name="closed" value="true" />
+      <created>1748316270571</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1748316270571</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

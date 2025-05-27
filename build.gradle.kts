@@ -61,6 +61,7 @@ compose.desktop {
             vendor = "SMFDrummer"
             description = "An all-purpose Plants vs Zombies 2 Chinese version tool. Compose for desktop distribution."
             copyright = "Copyright © 2025 SMFDrummer. All rights reserved."
+            licenseFile.set(project.file("LICENSE"))
 
             macOS {
                 bundleID = "io.github.smfdrummer.medal"

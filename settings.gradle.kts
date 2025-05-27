@@ -16,3 +16,4 @@ pluginManagement {
 }
 
 rootProject.name = "Medal-app-desktop"
+includeBuild("../Medal-core")
