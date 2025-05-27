@@ -24,6 +24,10 @@ jobs:
           repository: SMFDrummer/Medal-core
           path: Medal-core
 
+      - name: Dump workspace layout
+        run: ls -R .
+        working-directory: Medal-app-desktop
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
