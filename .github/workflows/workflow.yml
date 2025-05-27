@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: SMFDrummer/Medal-core
-          path: medal-core
+          path: Medal-core
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
