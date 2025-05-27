@@ -55,9 +55,29 @@ compose.desktop {
         mainClass = "MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "Medal-app-desktop"
             packageVersion = "1.0.0"
+            vendor = "SMFDrummer"
+            description = "An all-purpose Plants vs Zombies 2 Chinese version tool. Compose for desktop distribution."
+            copyright = "Copyright © 2025 SMFDrummer. All rights reserved."
+
+            macOS {
+                bundleID = "io.github.smfdrummer.medal"
+                dockName = "Medal-app-desktop"
+                iconFile.set(project.file("icons/ic_launcher.icns"))
+            }
+
+            windows {
+                shortcut = true
+                perUserInstall = true
+                dirChooser = true
+                iconFile.set(project.file("icons/ic_launcher.ico"))
+            }
+
+            linux {
+                iconFile.set(project.file("icons/ic_launcher.png"))
+            }
         }
     }
 }
