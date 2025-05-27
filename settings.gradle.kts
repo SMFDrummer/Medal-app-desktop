@@ -16,4 +16,9 @@ pluginManagement {
 }
 
 rootProject.name = "Medal-app-desktop"
-includeBuild("../Medal-core")
+includeBuild("../Medal-core") {
+    dependencySubstitution {
+        substitute(module("io.github.smfdrummer:medal-core"))
+            .using(project(":"))
+    }
+}
