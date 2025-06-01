@@ -44,6 +44,7 @@ import soup.compose.material.motion.animation.materialSharedAxisXIn
 import soup.compose.material.motion.animation.materialSharedAxisXOut
 import soup.compose.material.motion.animation.rememberSlideDistance
 import components.components.snackbar.SnackbarManager
+import io.github.smfdrummer.medal_app_desktop.ui.utils.getErrorString
 import java.awt.Toolkit
 import java.awt.datatransfer.Clipboard
 import java.awt.datatransfer.StringSelection
@@ -114,17 +115,6 @@ fun StrategyRunScreen(
 
     var currentPacketId by remember { mutableStateOf<String?>(null) }
     var currentUser by remember { mutableStateOf<User?>(null) }
-
-    fun StrategyException.getErrorString() = when(this) {
-        is StrategyException.UnknownRetryError -> "未知重试错误"
-        is StrategyException.TemplateRenderError -> "模板渲染错误: $key"
-        is StrategyException.InvalidActionValue -> "无效的操作值: $value"
-        is StrategyException.NetworkError -> "网络错误: ${cause.message}"
-        is StrategyException.DecryptionError -> "解密错误: ${cause.message}"
-        is StrategyException.UnexpectedResponseCode -> "意外的响应码: 期望 $expect, 实际 $actual"
-        is StrategyException.CredentialExpired -> "凭证已过期: 错误码 $code"
-        is StrategyException.CredentialRefreshError -> "凭证刷新错误: ${cause.message}"
-    }
 
     val contextCallback = remember {
         object : ContextCallback {

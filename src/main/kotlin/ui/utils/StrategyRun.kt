@@ -1,6 +1,7 @@
 package io.github.smfdrummer.medal_app_desktop.ui.utils
 
 import arrow.atomic.AtomicInt
+import arrow.core.raise.fold
 import io.github.smfdrummer.network.getMD5
 import io.github.smfdrummer.network.provider.IOSProvider
 import io.github.smfdrummer.network.provider.OfficialProvider
@@ -41,6 +42,23 @@ data class User(
 }
 
 private val fileMutex = Mutex()
+
+suspend fun StrategyConfig.runWith(
+    channel: Int,
+    phoneOrUserId: String? = null,
+    password: String? = null,
+    context: StrategyContext = StrategyContext()
+) = runCatching {
+    executeWith(
+        userProvider = when (channel) {
+            -1 -> if (!phoneOrUserId.isNullOrEmpty())
+                IOSProvider(phoneOrUserId) else null
+            else -> if (!phoneOrUserId.isNullOrEmpty() && !password.isNullOrEmpty())
+                OfficialProvider(phoneOrUserId, password.getMD5()) else null
+        },
+        context = context
+    )
+}
 
 suspend fun StrategyConfig.runWith(
     userPath: String,
@@ -134,4 +152,15 @@ suspend fun StrategyConfig.runWith(
     onStrategyComplete(false)
 }.onSuccess { success ->
     onStrategyComplete(true)
+}
+
+fun StrategyException.getErrorString() = when(this) {
+    is StrategyException.UnknownRetryError -> "未知重试错误"
+    is StrategyException.TemplateRenderError -> "模板渲染错误: $key"
+    is StrategyException.InvalidActionValue -> "无效的操作值: $value"
+    is StrategyException.NetworkError -> "网络错误: ${cause.message}"
+    is StrategyException.DecryptionError -> "解密错误: ${cause.message}"
+    is StrategyException.UnexpectedResponseCode -> "意外的响应码: 期望 $expect, 实际 $actual"
+    is StrategyException.CredentialExpired -> "凭证已过期: 错误码 $code"
+    is StrategyException.CredentialRefreshError -> "凭证刷新错误: ${cause.message}"
 }

@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Apps
+import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
@@ -35,6 +37,7 @@ import components.components.snackbar.rememberSnackbarHostState
 import io.github.smfdrummer.medal_app_desktop.generated.resources.Res
 import io.github.smfdrummer.medal_app_desktop.generated.resources.ic_launcher
 import io.github.smfdrummer.medal_app_desktop.generated.resources.ic_launcher_round
+import io.github.smfdrummer.medal_app_desktop.ui.pages.ArchiveScreen
 import io.github.smfdrummer.utils.strategy.StrategyConfig
 import org.jetbrains.compose.resources.painterResource
 import soup.compose.material.motion.animation.materialSharedAxisXIn
@@ -43,7 +46,7 @@ import soup.compose.material.motion.animation.rememberSlideDistance
 import ui.pages.*
 
 enum class Screen {
-    HOME, FEATURES, ACCOUNT, SETTINGS, STRATEGY_RUN
+    HOME, FEATURES, ACCOUNT, SETTINGS, STRATEGY_RUN, ARCHIVE
 }
 
 data class StrategyRunParams(
@@ -64,7 +67,8 @@ fun MedalApp() {
         Triple(Screen.HOME, "主页", Pair(Icons.Filled.Home, Icons.Outlined.Home)),
         Triple(Screen.FEATURES, "功能", Pair(Icons.Filled.Apps, Icons.Outlined.Apps)),
         Triple(Screen.ACCOUNT, "账号", Pair(Icons.Filled.Person, Icons.Outlined.Person)),
-        Triple(Screen.SETTINGS, "配置", Pair(Icons.Filled.Settings, Icons.Outlined.Settings))
+        Triple(Screen.ARCHIVE, "存档", Pair(Icons.Filled.Archive, Icons.Outlined.Archive)),
+        Triple(Screen.SETTINGS, "设置", Pair(Icons.Filled.Settings, Icons.Outlined.Settings)),
     )
 
     var medalAppLogoAlertDialogIsVisible by remember { mutableStateOf(false) }
@@ -149,6 +153,7 @@ fun MedalApp() {
 
                         Screen.ACCOUNT -> AccountScreen()
                         Screen.SETTINGS -> SettingsScreen()
+                        Screen.ARCHIVE -> ArchiveScreen()
                         Screen.STRATEGY_RUN -> {
                             strategyRunParams?.let { params ->
                                 StrategyRunScreen(

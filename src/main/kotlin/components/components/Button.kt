@@ -30,6 +30,10 @@ import components.MedalTheme
 import components.LocalContentColor
 import components.foundation.ButtonElevation
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import components.components.progressindicators.CircularProgressIndicator
 
 @Composable
 fun Button(
@@ -124,13 +128,14 @@ private fun DefaultButtonContent(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-//            if (!loading) {
-//                CircularProgressIndicator(
-//                    color = contentColor,
-//                    modifier = Modifier.size(20.dp),
-//                    strokeWidth = 2.dp
-//                )
-//            }
+            if (loading) {
+                CircularProgressIndicator(
+                    color = contentColor,
+                    modifier = Modifier.size(20.dp),
+                    strokeWidth = 2.dp
+                )
+                Spacer(Modifier.width(8.dp))
+            }
 
             Text(
                 text = AnnotatedString(text = text),

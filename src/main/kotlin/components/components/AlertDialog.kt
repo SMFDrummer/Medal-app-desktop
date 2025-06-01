@@ -469,7 +469,7 @@ fun AlertDialog(
             modifier = Modifier
                 .sizeIn(
                     minWidth = DialogMinWidth,
-                    maxWidth = DialogMaxWidth
+                    maxWidth = DialogMaxWidth * 8
                 ),
             shape = DialogShape,
             color = MedalTheme.colors.surface,
@@ -503,24 +503,26 @@ fun AlertDialog(
                 }
                 
                 // 按钮
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (dismissButtonText != null) {
-                        Button(
-                            text = dismissButtonText,
-                            variant = ButtonVariant.PrimaryGhost,
-                            onClick = onDismissRequest
-                        )
-                    }
-                    if (confirmButtonText != null) {
-                        Button(
-                            text = confirmButtonText,
-                            variant = ButtonVariant.PrimaryGhost,
-                            onClick = onDismissRequest
-                        )
+                if (dismissButtonText != null || confirmButtonText != null) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (dismissButtonText != null) {
+                            Button(
+                                text = dismissButtonText,
+                                variant = ButtonVariant.PrimaryGhost,
+                                onClick = onDismissRequest
+                            )
+                        }
+                        if (confirmButtonText != null) {
+                            Button(
+                                text = confirmButtonText,
+                                variant = ButtonVariant.PrimaryGhost,
+                                onClick = onConfirmClick
+                            )
+                        }
                     }
                 }
             }
