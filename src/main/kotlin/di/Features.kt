@@ -1,7 +1,10 @@
 package io.github.smfdrummer.medal_app_desktop.di
 
 import io.github.smfdrummer.medal_app_desktop.ui.utils.buildFeatures
-import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.*
+import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.庭院点赞
+import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.获取云端存档
+import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.账号激活
+import io.github.smfdrummer.utils.json.*
 
 val features = buildFeatures {
     feature {
@@ -19,5 +22,43 @@ val features = buildFeatures {
         title { "账号初始化激活" }
         description { "V206 + V316 + V900" }
         strategy { 账号激活() }
+    }
+
+    feature {
+        title { "获取账号详细信息" }
+        description { "电鳗香蕉碎片，贪吃龙草碎片，守卫菇碎片，进阶书碎片\n万能碎片，钻石，追击币，萝卜瓷砖基因，高级神器祝福券" }
+        strategy { 获取云端存档() }
+        analyze { context, user ->
+            context.responses["V316"]?.getJsonObject("d")?.apply {
+                getJsonArray("pcl")?.apply {
+                    find { it.asObject?.getString("i") == "22000830" }?.asObject?.getString("q")
+                        ?.let { user.properties["22000830"] = it }
+                    find { it.asObject?.getString("i") == "22000790" }?.asObject?.getString("q")
+                        ?.let { user.properties["22000790"] = it }
+                    find { it.asObject?.getString("i") == "22001280" }?.asObject?.getString("q")
+                        ?.let { user.properties["22001280"] = it }
+                }
+
+                getJsonArray("il")?.apply {
+                    find { it.asObject?.getString("i") == "23046" }?.asObject?.getString("q")
+                        ?.let { user.properties["23046"] = it }
+                    find { it.asObject?.getString("i") == "23225" }?.asObject?.getString("q")
+                        ?.let { user.properties["23225"] = it }
+                    find { it.asObject?.getString("i") == "23093" }?.asObject?.getString("q")
+                        ?.let { user.properties["23093"] = it }
+                    find { it.asObject?.getString("i") == "23124" }?.asObject?.getString("q")
+                        ?.let { user.properties["23124"] = it }
+                }
+
+                getJsonArray("gene")?.apply {
+                    find { it.asObject?.getInt("gi") == 73069 }?.asObject?.getInt("l")
+                        ?.let { user.properties["73069"] = "$it" }
+                }
+
+                getJsonObject("p")?.apply {
+                    getString("fg")?.let { user.properties["3008"] = it }
+                }
+            }
+        }
     }
 }

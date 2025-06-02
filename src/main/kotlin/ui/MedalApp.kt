@@ -3,42 +3,30 @@ package ui
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.togetherWith
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Apps
-import androidx.compose.material.icons.filled.Archive
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Apps
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import components.MedalTheme
-import components.components.AlertDialog
-import components.components.Icon
-import components.components.IconButton
-import components.components.IconButtonVariant
-import components.components.Text
+import components.components.*
 import components.components.snackbar.SnackbarHost
 import components.components.snackbar.rememberSnackbarHostState
 import io.github.smfdrummer.medal_app_desktop.generated.resources.Res
 import io.github.smfdrummer.medal_app_desktop.generated.resources.ic_launcher
 import io.github.smfdrummer.medal_app_desktop.generated.resources.ic_launcher_round
 import io.github.smfdrummer.medal_app_desktop.ui.pages.ArchiveScreen
+import io.github.smfdrummer.medal_app_desktop.ui.utils.User
 import io.github.smfdrummer.utils.strategy.StrategyConfig
+import io.github.smfdrummer.utils.strategy.StrategyContext
 import org.jetbrains.compose.resources.painterResource
 import soup.compose.material.motion.animation.materialSharedAxisXIn
 import soup.compose.material.motion.animation.materialSharedAxisXOut
@@ -52,7 +40,8 @@ enum class Screen {
 data class StrategyRunParams(
     val accountPath: String,
     val strategy: StrategyConfig,
-    val additionalCutoff: ((Int) -> Boolean)? = null
+    val additionalCutoff: ((Int) -> Boolean)? = null,
+    val onContextAnalyze: ((StrategyContext, User) -> Unit)? = null
 )
 
 @Composable
@@ -145,8 +134,9 @@ fun MedalApp() {
                     when (screen) {
                         Screen.HOME -> HomeScreen()
                         Screen.FEATURES -> FeaturesScreen(
-                            onNavigateToStrategyRun = { accountPath, strategy, additionalCutoff ->
-                                strategyRunParams = StrategyRunParams(accountPath, strategy, additionalCutoff)
+                            onNavigateToStrategyRun = { accountPath, strategy, additionalCutoff, onContextAnalyze ->
+                                strategyRunParams =
+                                    StrategyRunParams(accountPath, strategy, additionalCutoff, onContextAnalyze)
                                 currentScreen = Screen.STRATEGY_RUN
                             }
                         )
@@ -163,7 +153,8 @@ fun MedalApp() {
                                         currentScreen = Screen.FEATURES
                                         strategyRunParams = null
                                     },
-                                    additionalCutoff = params.additionalCutoff
+                                    additionalCutoff = params.additionalCutoff,
+                                    onContextAnalyze = params.onContextAnalyze
                                 )
                             }
                         }

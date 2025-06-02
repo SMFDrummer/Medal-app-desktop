@@ -4,16 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-SNAPSHOT">
+    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="0.4-hotfix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/components/components/AlertDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/components/components/AlertDialog.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/components/components/Button.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/components/components/Button.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/di/AppModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/di/AppModule.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/MedalApp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/MedalApp.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/ArchiveScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/ArchiveScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/FeaturesScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/FeaturesScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/StrategyRunScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/StrategyRunScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyFeatureBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyFeatureBuilder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyRun.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyRun.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/HomeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/service/Login.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/service/Login.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/StrategyViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/StrategyViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -268,7 +267,9 @@
       <workItem from="1748566225756" duration="17744000" />
       <workItem from="1748656210878" duration="18770000" />
       <workItem from="1748711645482" duration="291000" />
-      <workItem from="1748741004183" duration="16090000" />
+      <workItem from="1748741004183" duration="16284000" />
+      <workItem from="1748798347541" duration="1336000" />
+      <workItem from="1748824427906" duration="14803000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -358,7 +359,23 @@
       <option name="project" value="LOCAL" />
       <updated>1748358435056</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="1.0.0-build.3">
+      <option name="closed" value="true" />
+      <created>1748789951922</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1748789951923</updated>
+    </task>
+    <task id="LOCAL-00013" summary="0.4-hotfix">
+      <option name="closed" value="true" />
+      <created>1748789974162</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1748789974162</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -366,7 +383,12 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1.0.0-SNAPSHOT" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.0.0-SNAPSHOT" />
+    <MESSAGE value="1.0.0-build.3" />
+    <MESSAGE value="0.4-hotfix" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.4-hotfix" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

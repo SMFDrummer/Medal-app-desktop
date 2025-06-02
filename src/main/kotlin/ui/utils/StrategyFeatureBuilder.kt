@@ -1,13 +1,15 @@
 package io.github.smfdrummer.medal_app_desktop.ui.utils
 
 import io.github.smfdrummer.utils.strategy.StrategyConfig
+import io.github.smfdrummer.utils.strategy.StrategyContext
 
 data class StrategyFeature(
     val title: String,
     val description: String,
     val inputs: List<FeatureInput>,
     val strategyBuilder: (Map<String, String>) -> StrategyConfig,
-    val cutoffBuilder: ((Map<String, String>) -> ((Int) -> Boolean)?)? = null
+    val cutoffBuilder: ((Map<String, String>) -> ((Int) -> Boolean)?)? = null,
+    val analyzeBuilder: ((StrategyContext, User) -> Unit)? = null
 )
 
 sealed interface FeatureInput {
@@ -37,6 +39,7 @@ class FeatureBuilder {
     private val inputs = mutableListOf<FeatureInput>()
     private var strategyBuilder: ((Map<String, String>) -> StrategyConfig)? = null
     private var cutoffBuilder: ((Map<String, String>) -> ((Int) -> Boolean)?)? = null
+    private var analyzeBuilder: ((StrategyContext, User) -> Unit)? = null
 
     fun title(block: () -> String) {
         title = block()
@@ -60,6 +63,10 @@ class FeatureBuilder {
         cutoffBuilder = block
     }
 
+    fun analyze(block: (StrategyContext, User) -> Unit) {
+        analyzeBuilder = block
+    }
+
     fun build(): StrategyFeature {
         require(strategyBuilder != null) { "Strategy builder must be specified" }
         return StrategyFeature(
@@ -67,7 +74,8 @@ class FeatureBuilder {
             description = description,
             inputs = inputs,
             strategyBuilder = strategyBuilder!!,
-            cutoffBuilder = cutoffBuilder
+            cutoffBuilder = cutoffBuilder,
+            analyzeBuilder = analyzeBuilder
         )
     }
 }

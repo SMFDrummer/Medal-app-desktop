@@ -22,9 +22,11 @@ import components.components.*
 import components.components.card.Card
 import components.components.card.CardDefaults
 import components.components.card.DashBoardCard
+import components.components.snackbar.SnackbarManager
 import data.AppSettings
 import data.SettingsDataStore
 import io.github.smfdrummer.medal_app_desktop.ui.utils.User
+import io.github.smfdrummer.medal_app_desktop.ui.utils.getErrorString
 import io.github.smfdrummer.medal_app_desktop.ui.utils.runWith
 import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.CardStatus
 import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.RunningStatus
@@ -34,6 +36,7 @@ import io.github.smfdrummer.utils.json.JsonFeature
 import io.github.smfdrummer.utils.json.jsonWith
 import io.github.smfdrummer.utils.strategy.ContextCallback
 import io.github.smfdrummer.utils.strategy.StrategyConfig
+import io.github.smfdrummer.utils.strategy.StrategyContext
 import io.github.smfdrummer.utils.strategy.StrategyException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,10 +46,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import soup.compose.material.motion.animation.materialSharedAxisXIn
 import soup.compose.material.motion.animation.materialSharedAxisXOut
 import soup.compose.material.motion.animation.rememberSlideDistance
-import components.components.snackbar.SnackbarManager
-import io.github.smfdrummer.medal_app_desktop.ui.utils.getErrorString
 import java.awt.Toolkit
-import java.awt.datatransfer.Clipboard
 import java.awt.datatransfer.StringSelection
 
 @Composable
@@ -54,7 +54,8 @@ fun StrategyRunScreen(
     accountPath: String,
     strategy: StrategyConfig,
     onBack: () -> Unit,
-    additionalCutoff: ((Int) -> Boolean)? = null
+    additionalCutoff: ((Int) -> Boolean)? = null,
+    onContextAnalyze: ((StrategyContext, User) -> Unit)? = null
 ) {
     val scope = rememberCoroutineScope()
     val clipboard = Toolkit.getDefaultToolkit().systemClipboard
@@ -101,7 +102,7 @@ fun StrategyRunScreen(
 
     // 设置当前策略信息
     LaunchedEffect(Unit) {
-        strategyViewModel.setCurrentStrategy(accountPath, strategy, additionalCutoff)
+        strategyViewModel.setCurrentStrategy(accountPath, strategy, additionalCutoff, onContextAnalyze)
     }
 
     // 清理当前策略信息
@@ -220,7 +221,6 @@ fun StrategyRunScreen(
                                 clipboard.setContents(selection, null)
                                 SnackbarManager.showSnackbar("已复制到剪贴板")
                             },
-                            clipboard = clipboard,
                             packetId = callback.packetId,
                             status = callback.status,
                             content = callback.content,
@@ -316,6 +316,7 @@ fun StrategyRunScreen(
                                     channel = settings.channel,
                                     contextCallback = contextCallback,
                                     additionalCutoff = additionalCutoff,
+                                    onContextAnalyze = onContextAnalyze,
                                     onStrategyException = { error ->
                                         strategyViewModel.sendCallback(null, CardStatus.ERROR, error.getErrorString())
                                     },
@@ -342,7 +343,6 @@ fun StrategyRunScreen(
 @Composable
 private fun StrategyCallbackCard(
     modifier: Modifier = Modifier,
-    clipboard: Clipboard,
     packetId: String? = null,
     status: CardStatus,
     content: String,

@@ -1,7 +1,6 @@
 package io.github.smfdrummer.medal_app_desktop.ui.utils
 
 import arrow.atomic.AtomicInt
-import arrow.core.raise.fold
 import io.github.smfdrummer.network.getMD5
 import io.github.smfdrummer.network.provider.IOSProvider
 import io.github.smfdrummer.network.provider.OfficialProvider
@@ -32,6 +31,7 @@ data class User(
     var credential: Credential? = null,
     var activate: Boolean = true,
     var banned: Boolean = false,
+    val properties: MutableMap<String, String> = mutableMapOf()
 ) {
     @Serializable
     data class Credential(
@@ -68,7 +68,8 @@ suspend fun StrategyConfig.runWith(
     onUserChanged: (User) -> Unit,
     onStrategyException: (StrategyException) -> Unit,
     onStrategyComplete: (Boolean) -> Unit,
-    onError: (Throwable) -> Unit
+    onError: (Throwable) -> Unit,
+    onContextAnalyze: ((StrategyContext, User) -> Unit)? = null
 ) = runCatching {
     val successCounter = AtomicInt()
     val file = File(userPath)
@@ -137,6 +138,9 @@ suspend fun StrategyConfig.runWith(
                 )
             }
         }
+
+        onContextAnalyze?.invoke(context, user)
+        
         fileMutex.withLock {
             file.writeText(
                 jsonWith(

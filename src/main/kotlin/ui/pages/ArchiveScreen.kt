@@ -185,9 +185,12 @@ fun ArchiveScreen() {
                             contentColor = contentColorFor(containerColor),
                             text = { Text(if (isCredentialValid) "确认更改" else "更新凭据") },
                             icon = { Icon(if (isCredentialValid) Icons.Rounded.Check else Icons.Rounded.Error) },
-                            onClick = { if (isCredentialValid) archiveViewModel.requestArchive(settings.channel).invokeOnCompletion {
-                                SnackbarManager.showSnackbar("执行完成，请登录游戏查看")
-                            } }
+                            onClick = {
+                                if (isCredentialValid) archiveViewModel.requestArchive(settings.channel)
+                                    .invokeOnCompletion {
+                                        SnackbarManager.showSnackbar("执行完成，请登录游戏查看")
+                                    }
+                            }
                         )
                     }
                 }
@@ -207,6 +210,52 @@ fun ArchiveScreen() {
 fun ModifyArchive() {
     val archiveViewModel = koinViewModel<ArchiveViewModel>()
     val origin by archiveViewModel.origin.collectAsState()
+    val isCredentialValid by archiveViewModel.isCredentialValid.collectAsState()
+
+    val settingsDataStore = getKoin().get<SettingsDataStore>()
+    val settings by settingsDataStore.settings.collectAsState(initial = AppSettings())
+
+    var clearAllVisible by remember { mutableStateOf(false) }
+    var clearVirtualVisible by remember { mutableStateOf(false) }
+
+    if (clearAllVisible) {
+        AlertDialog(
+            onDismissRequest = { clearAllVisible = false },
+            onConfirmClick = { clearAllVisible = false; archiveViewModel.clearAll() },
+            title = "更换存档",
+            text = "确认更换存档吗？"
+        )
+    }
+
+    if (clearVirtualVisible) {
+        AlertDialog(
+            onDismissRequest = { clearVirtualVisible = false },
+            onConfirmClick = {
+                clearVirtualVisible = false
+
+                if (isCredentialValid) {
+                    archiveViewModel.apply {
+                        modifyArchive {
+                            it.copy {
+                                path("sd.psla") { buildJsonArray { } } // 清空植物阶数列表
+                                path("sd.mtrl") { buildJsonArray { } } // 清空道具列表
+                                path("sd.asp") { buildJsonArray { } } // 清空挂件碎片列表
+                                path("sd.ppr") { buildJsonArray { } } // 清空植物碎片列表
+                                path("sd.lpapi") { buildJsonArray { } } // 清空装扮碎片列表
+                            }
+                        }
+                        requestArchive(settings.channel)
+                            .invokeOnCompletion {
+                                clearAll()
+                                SnackbarManager.showSnackbar("执行完成，请重新登录")
+                            }
+                    }
+                } else SnackbarManager.showSnackbar("请更新凭据后再试")
+            },
+            title = "清除虚拟物品",
+            text = "确认清除虚拟物品吗？清除后需要重新登录！"
+        )
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 32.dp).verticalScroll(rememberScrollState()),
@@ -232,13 +281,23 @@ fun ModifyArchive() {
 
         PrCard(Modifier.fillMaxWidth())
         LpaeiCard(Modifier.fillMaxWidth())
+        PasiCard(Modifier.fillMaxWidth())
 
-        Button(
-            modifier = Modifier.padding(vertical = 14.dp),
-            text = "换个存档",
-            variant = ButtonVariant.DestructiveGhost,
-            onClick = { archiveViewModel.clearAll() }
-        )
+        Row(
+            modifier = Modifier.padding(bottom = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Button(
+                text = "换个存档",
+                variant = ButtonVariant.DestructiveGhost,
+                onClick = { clearAllVisible = true },
+            )
+            Button(
+                text = "清除虚拟物品",
+                variant = ButtonVariant.PrimaryGhost,
+                onClick = { clearVirtualVisible = true },
+            )
+        }
     }
 }
 
@@ -432,9 +491,9 @@ fun NameCard(modifier: Modifier = Modifier) {
 
     val containerColor = if (enabled) MedalTheme.colors.success else MedalTheme.colors.background
 
-    Card(
+    OutlinedCard(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
+        colors = CardDefaults.outlinedCardColors(
             containerColor = containerColor,
             contentColor = contentColorFor(containerColor),
         ),
@@ -478,9 +537,9 @@ fun CoinCard(modifier: Modifier = Modifier) {
 
     val containerColor = if (enabled) MedalTheme.colors.success else MedalTheme.colors.background
 
-    Card(
+    OutlinedCard(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
+        colors = CardDefaults.outlinedCardColors(
             containerColor = containerColor,
             contentColor = contentColorFor(containerColor),
         ),
@@ -689,11 +748,11 @@ fun WmedCard(modifier: Modifier = Modifier) {
 
     var enabled by remember { mutableStateOf(false) }
 
-    val containerColor = if (enabled) MedalTheme.colors.success else MedalTheme.colors.secondary
+    val containerColor = if (enabled) MedalTheme.colors.success else MedalTheme.colors.background
 
-    Card(
+    OutlinedCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(
+        colors = CardDefaults.outlinedCardColors(
             containerColor = containerColor,
             contentColor = contentColorFor(containerColor)
         ),
@@ -739,11 +798,11 @@ fun PrCard(modifier: Modifier = Modifier) {
 
     var enabled by remember { mutableStateOf(false) }
 
-    val containerColor = if (enabled) MedalTheme.colors.success else MedalTheme.colors.secondary
+    val containerColor = if (enabled) MedalTheme.colors.success else MedalTheme.colors.background
 
-    Card(
+    OutlinedCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(
+        colors = CardDefaults.outlinedCardColors(
             containerColor = containerColor,
             contentColor = contentColorFor(containerColor)
         ),
@@ -887,3 +946,221 @@ fun ObtainArchive() {
         )
     }
 }
+
+@Composable
+fun PasiCard(modifier: Modifier = Modifier) {
+    val archiveViewModel = koinViewModel<ArchiveViewModel>()
+    val origin by archiveViewModel.origin.collectAsState()
+
+    val originPasi = origin?.p?.asObject
+        ?.getJsonObject("sd")
+        ?.getJsonArray("pasi")
+        ?: buildJsonArray { }
+
+    fun selectPacidLPair(pasi: JsonArray): Pair<Long, Int>? {
+        // Step 1: 筛选 pact 在枚举中的
+        val validItems = pasi.mapNotNull { it.jsonObject }
+            .filter { item ->
+                val pact = item["pact"]?.jsonPrimitive?.contentOrNull
+                pact != null && Accessory.fromPact(pact) != null
+            }
+
+        if (validItems.isEmpty()) return null
+
+        // Step 2: 找出 l 最大值
+        val maxL = validItems.maxOfOrNull { it["l"]?.jsonPrimitive?.intOrNull ?: -1 } ?: -1
+        val maxLItems = validItems.filter { it["l"]?.jsonPrimitive?.intOrNull == maxL }
+
+        // Step 3: 找 pacid 出现最多的
+        val pacidCountMap = maxLItems
+            .mapNotNull { it["pacid"]?.jsonPrimitive?.longOrNull }
+            .groupingBy { it }
+            .eachCount()
+
+        val maxCount = pacidCountMap.values.maxOrNull() ?: return null
+        val candidates = pacidCountMap.filterValues { it == maxCount }.keys
+
+        // 优先选 pact == super_clock_7 的 pacid
+        val preferred = maxLItems.firstOrNull {
+            it["pact"]?.jsonPrimitive?.contentOrNull == "super_clock_7" &&
+                    it["pacid"]?.jsonPrimitive?.longOrNull in candidates
+        }
+
+        val finalPacid = preferred?.get("pacid")?.jsonPrimitive?.longOrNull
+            ?: candidates.firstOrNull()
+
+        return finalPacid?.let { it to maxL }
+    }
+
+    val pacidL by remember { mutableStateOf(selectPacidLPair(originPasi)) }
+    var enabled by remember { mutableStateOf(if (pacidL == null) null else false) }
+
+    val containerColor = when (enabled) {
+        true -> MedalTheme.colors.success
+        false -> MedalTheme.colors.background
+        null -> MedalTheme.colors.secondary
+    }
+
+    val accordionState = rememberAccordionState(enabled = enabled != null)
+
+    val pasiMap = remember { mutableStateMapOf<Accessory, String>() }
+
+    OutlinedCard(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = containerColor,
+            contentColor = contentColorFor(containerColor)
+        )
+    ) {
+        Accordion(
+            state = accordionState,
+            headerContent = {
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("植物挂件", style = MedalTheme.typography.h2)
+                        Text("点击展开挂件列表", style = MedalTheme.typography.body1)
+                    }
+
+                    Button(
+                        text = when (enabled) {
+                            true -> "已覆盖"
+                            false -> "未修改"
+                            null -> "不满足条件"
+                        },
+                        variant = if (enabled == false) ButtonVariant.Primary else ButtonVariant.Secondary,
+                        onClick = {
+                            if (pacidL != null) {
+                                val addedItems = buildList {
+                                    pasiMap.forEach { (accessory, countStr) ->
+                                        val count = countStr.toIntOrNull() ?: 0
+                                        repeat(count) {
+                                            add(
+                                                buildJsonObject {
+                                                    put("pacid", pacidL!!.first)
+                                                    put("pact", accessory.pact)
+                                                    put("l", pacidL!!.second)
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+
+                                val pasi = buildJsonArray {
+                                    originPasi.forEach { add(it) }
+                                    addedItems.forEach { add(it) }
+                                }
+
+                                archiveViewModel.modifyArchive {
+                                    it.copy {
+                                        path("sd.pasi") {
+                                            if (enabled == true) originPasi else pasi
+                                        }
+                                    }
+                                }
+                                enabled = !enabled!!
+                            }
+                        }
+                    )
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (enabled != null) {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RectangleShape,
+                        colors = CardDefaults.cardColors(
+                            containerColor = if (enabled == true) MedalTheme.colors.success else MedalTheme.colors.surface,
+                            contentColor = if (enabled == true) MedalTheme.colors.onSuccess else MedalTheme.colors.onSurface
+                        )
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text("挂件名称")
+                            Text("持有数量")
+                            Text("添加数量")
+                            Spacer(Modifier.width(16.dp))
+                        }
+                    }
+                }
+                Accessory.entries.forEachIndexed { index, accessory ->
+                    if (index != 0) HorizontalDivider()
+
+                    val ownedCount = originPasi.count {
+                        val pact = it.jsonObject["pact"]?.jsonPrimitive?.contentOrNull
+                        Accessory.fromPact(pact ?: "") == accessory
+                    }
+
+                    val countText = pasiMap.getOrPut(accessory) { "0" }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(accessory.displayName, modifier = Modifier.weight(1f))
+                        Text(ownedCount.toString(), modifier = Modifier.weight(1f))
+                        UnderlinedTextField(
+                            value = countText,
+                            onValueChange = { newValue ->
+                                if (newValue.all { it.isDigit() }) {
+                                    pasiMap[accessory] = newValue
+                                }
+                            },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+                Spacer(Modifier.height(2.dp))
+            }
+        }
+    }
+}
+
+enum class Accessory(val displayName: String, val pact: String) {
+    SUPER_CLOCK("紫手套", "super_clock"),
+    SUPER_CLOCK_1("红蜡烛", "super_clock_1"),
+    SUPER_CLOCK_2("白蜡烛", "super_clock_2"),
+    SUPER_CLOCK_3("太阳锅盔", "super_clock_3"),
+    SUPER_CLOCK_4("月亮锅盔", "super_clock_4"),
+    SUPER_CLOCK_5("公主冰冠", "super_clock_5"),
+    SUPER_CLOCK_6("女王冰冠", "super_clock_6"),
+    SUPER_CLOCK_7("牛仔手套", "super_clock_7"),
+    SUPER_CLOCK_8("聚能电池", "super_clock_8"),
+    SUPER_CLOCK_9("节能电池", "super_clock_9"),
+    SUPER_CLOCK_10("强效杀虫剂", "super_clock_10"),
+    SUPER_CLOCK_11("杀虫剂", "super_clock_11"),
+    SUPER_CLOCK_12("大爆竹", "super_clock_12"),
+    SUPER_CLOCK_13("爆竹", "super_clock_13"),
+    SUPER_CLOCK_14("小时钟", "super_clock_14"),
+    SUPER_CLOCK_15("加速时钟", "super_clock_15"),
+    SUPER_CLOCK_16("警用电击棍", "super_clock_16"),
+    SUPER_CLOCK_17("电击棍", "super_clock_17"),
+    PAINKILLER_1("止疼剂", "painkiller_1"),
+    PAINKILLER_2("止疼片", "painkiller_2"),
+    SLINGSHOT_1("金属弹弓", "slingshot_1"),
+    SLINGSHOT_2("木质弹弓", "slingshot_2"),
+    MAGIC_BOOK_1("魔法书", "magic_book_1"),
+    MAGIC_BOOK_2("高级魔法书", "magic_book_2"),
+    SUN_GEAR_1("阳光齿轮", "sun_gear_1"),
+    TRAVEL_TOGETHER_1("时光胶囊", "travel_together_1"),
+    HERO_CAPE_1("降魔披风", "hero_cape_1");
+
+    companion object {
+        fun fromPact(pact: String): Accessory? = entries.find { it.pact == pact }
+        fun fromName(name: String): Accessory? = entries.find { it.displayName == name }
+    }
+}
+

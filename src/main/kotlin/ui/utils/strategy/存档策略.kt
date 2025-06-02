@@ -4,11 +4,7 @@ import arrow.optics.copy
 import io.github.smfdrummer.network.encryptBase64
 import io.github.smfdrummer.network.encryptGzip
 import io.github.smfdrummer.network.getMD5
-import io.github.smfdrummer.utils.json.JsonFeature
-import io.github.smfdrummer.utils.json.jsonWith
-import io.github.smfdrummer.utils.json.path
-import io.github.smfdrummer.utils.json.toAsciiLiteral
-import io.github.smfdrummer.utils.json.toScaledLiteral
+import io.github.smfdrummer.utils.json.*
 import io.github.smfdrummer.utils.strategy.buildStrategy
 import kotlinx.serialization.json.JsonElement
 
@@ -63,6 +59,30 @@ fun 覆盖自定义存档(
               "ui": "{{ui}}"
             }
         """.trimIndent())
+
+        onSuccess { true }
+    }
+}
+
+fun 获取云端存档() = buildStrategy {
+    version = 1
+    description = "获取云端存档"
+
+    packet {
+        i = "V316"
+
+        parse(
+            """
+            {
+              "b": "0",
+              "n": "",
+              "pi": "{{pi}}",
+              "sk": "{{sk}}",
+              "ui": "{{ui}}"
+            }
+
+        """.trimIndent()
+        )
 
         onSuccess { true }
     }

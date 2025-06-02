@@ -18,16 +18,18 @@ import components.components.textfield.OutlinedTextField
 import data.AppSettings
 import data.SettingsDataStore
 import io.github.smfdrummer.medal_app_desktop.di.features
+import io.github.smfdrummer.medal_app_desktop.ui.utils.User
 import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.RunningStatus
 import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.StrategyViewModel
 import io.github.smfdrummer.utils.strategy.StrategyConfig
+import io.github.smfdrummer.utils.strategy.StrategyContext
 import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
 import java.io.File
 
 @Composable
 fun FeaturesScreen(
-    onNavigateToStrategyRun: (String, StrategyConfig, ((Int) -> Boolean)?) -> Unit
+    onNavigateToStrategyRun: (String, StrategyConfig, ((Int) -> Boolean)?, ((StrategyContext, User) -> Unit)?) -> Unit
 ) {
     val settingsDataStore = getKoin().get<SettingsDataStore>()
     val settings by settingsDataStore.settings.collectAsState(initial = AppSettings())
@@ -38,6 +40,7 @@ fun FeaturesScreen(
     var searchQuery by remember { mutableStateOf("") }
     var selectedStrategy by remember { mutableStateOf<StrategyConfig?>(null) }
     var additionalCutoff by remember { mutableStateOf<((Int) -> Boolean)?>(null) }
+    var contextAnalyze by remember { mutableStateOf<((StrategyContext, User) -> Unit)?>(null) }
     var accountDialogVisible by remember { mutableStateOf(false) }
     var inputValues by remember { mutableStateOf(mapOf<String, String>()) }
 
@@ -56,12 +59,14 @@ fun FeaturesScreen(
                 accountDialogVisible = false
                 selectedStrategy = null
                 additionalCutoff = null
+                contextAnalyze = null
                 inputValues = mapOf()
             },
             onConfirmClick = {
                 accountDialogVisible = false
                 selectedStrategy = null
                 additionalCutoff = null
+                contextAnalyze = null
                 inputValues = mapOf()
             },
             confirmButtonText = null,
@@ -91,7 +96,12 @@ fun FeaturesScreen(
                                 variant = ButtonVariant.PrimaryGhost,
                                 onClick = {
                                     accountDialogVisible = false
-                                    onNavigateToStrategyRun(file.absolutePath, selectedStrategy!!, additionalCutoff)
+                                    onNavigateToStrategyRun(
+                                        file.absolutePath,
+                                        selectedStrategy!!,
+                                        additionalCutoff,
+                                        contextAnalyze
+                                    )
                                 }
                             ) {
                                 Row(
@@ -155,7 +165,8 @@ fun FeaturesScreen(
                         val currentAccountPath by strategyViewModel.currentAccountPath.collectAsState()
                         val currentStrategy by strategyViewModel.currentStrategy.collectAsState()
                         val currentCutoff by strategyViewModel.currentCutoff.collectAsState()
-                        
+                        val currentAnalyze by strategyViewModel.currentAnalyze.collectAsState()
+
                         if (currentAccountPath != null && currentStrategy != null) {
                             OutlinedCard(
                                 modifier = Modifier.fillMaxWidth(),
@@ -163,7 +174,8 @@ fun FeaturesScreen(
                                     onNavigateToStrategyRun(
                                         currentAccountPath!!,
                                         currentStrategy!!,
-                                        currentCutoff
+                                        currentCutoff,
+                                        currentAnalyze
                                     )
                                 }
                             ) {
@@ -238,6 +250,7 @@ fun FeaturesScreen(
                                     onClick = {
                                         selectedStrategy = feature.strategyBuilder(inputValues)
                                         additionalCutoff = feature.cutoffBuilder?.invoke(inputValues)
+                                        contextAnalyze = feature.analyzeBuilder
                                         strategyViewModel.setRunning(RunningStatus.PENDING)
                                         accountDialogVisible = true
                                     }
