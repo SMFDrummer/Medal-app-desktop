@@ -3,10 +3,10 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     kotlin("jvm")
     id("org.jetbrains.compose")
-    id("org.jetbrains.compose.hot-reload") version "1.0.0-alpha10"
+    id("org.jetbrains.compose.hot-reload")
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.nomanr.plugin.lumo")
-    kotlin("plugin.serialization") version "2.1.20"
+    kotlin("plugin.serialization") version "2.1.21"
     id("com.google.devtools.ksp") version "2.1.20-2.0.0"
 }
 
@@ -42,6 +42,7 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.1")
 
     implementation(platform("io.arrow-kt:arrow-stack:2.1.2"))
     implementation("io.arrow-kt:arrow-core")

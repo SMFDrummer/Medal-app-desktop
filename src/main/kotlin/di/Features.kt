@@ -4,6 +4,7 @@ import io.github.smfdrummer.medal_app_desktop.ui.utils.buildFeatures
 import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.庭院点赞
 import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.获取云端存档
 import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.账号激活
+import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.领取兑换码
 import io.github.smfdrummer.utils.json.*
 
 val features = buildFeatures {
@@ -60,5 +61,14 @@ val features = buildFeatures {
                 }
             }
         }
+    }
+
+    feature {
+        title { "领取兑换码" }
+        description { "输入可用的兑换码领取道具" }
+        inputs {
+            text("c") { "兑换码" }
+        }
+        strategy { values -> 领取兑换码(values["c"]!!) }
     }
 }

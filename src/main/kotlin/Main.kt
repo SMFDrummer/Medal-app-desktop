@@ -22,7 +22,7 @@ import ui.MedalApp
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "Medal for Desktop"
+        title = "Medal for Desktop",
     ) {
         KoinApplication(application = { modules(appModule) }) {
             val settingsDataStore = getKoin().get<SettingsDataStore>()

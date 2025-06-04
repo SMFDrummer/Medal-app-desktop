@@ -132,9 +132,10 @@ fun FeaturesScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(32.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.fillMaxSize().padding(horizontal = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            Spacer(Modifier.height(16.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -259,6 +260,7 @@ fun FeaturesScreen(
                         }
                     }
                 }
+                item { Spacer(Modifier.height(16.dp)) }
             }
         }
     }

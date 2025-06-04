@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="0.4-hotfix">
+    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-build.4">
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/MedalApp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/MedalApp.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/ArchiveScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/ArchiveScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/FeaturesScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/FeaturesScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/StrategyRunScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/StrategyRunScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyFeatureBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyFeatureBuilder.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyRun.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyRun.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/StrategyViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/StrategyViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -269,7 +268,14 @@
       <workItem from="1748711645482" duration="291000" />
       <workItem from="1748741004183" duration="16284000" />
       <workItem from="1748798347541" duration="1336000" />
-      <workItem from="1748824427906" duration="14803000" />
+      <workItem from="1748824427906" duration="18049000" />
+      <workItem from="1748912734885" duration="2375000" />
+      <workItem from="1748928729292" duration="3199000" />
+      <workItem from="1748956913596" duration="2448000" />
+      <workItem from="1748998307092" duration="748000" />
+      <workItem from="1748999740141" duration="609000" />
+      <workItem from="1749009443553" duration="4198000" />
+      <workItem from="1749041741364" duration="925000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -375,7 +381,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748789974162</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="1.0.0-build.4">
+      <option name="closed" value="true" />
+      <created>1748879101215</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1748879101215</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -385,7 +399,8 @@
     <MESSAGE value="1.0.0-SNAPSHOT" />
     <MESSAGE value="1.0.0-build.3" />
     <MESSAGE value="0.4-hotfix" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.4-hotfix" />
+    <MESSAGE value="1.0.0-build.4" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.0-build.4" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
