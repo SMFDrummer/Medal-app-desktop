@@ -24,6 +24,7 @@ import io.github.smfdrummer.medal_app_desktop.generated.resources.Res
 import io.github.smfdrummer.medal_app_desktop.generated.resources.ic_launcher
 import io.github.smfdrummer.medal_app_desktop.generated.resources.ic_launcher_round
 import io.github.smfdrummer.medal_app_desktop.ui.pages.ArchiveScreen
+import io.github.smfdrummer.medal_app_desktop.ui.pages.ExperimentScreen
 import io.github.smfdrummer.medal_app_desktop.ui.utils.User
 import io.github.smfdrummer.utils.strategy.StrategyConfig
 import io.github.smfdrummer.utils.strategy.StrategyContext
@@ -34,7 +35,7 @@ import soup.compose.material.motion.animation.rememberSlideDistance
 import ui.pages.*
 
 enum class Screen {
-    HOME, FEATURES, ACCOUNT, SETTINGS, STRATEGY_RUN, ARCHIVE
+    HOME, FEATURES, ACCOUNT, SETTINGS, STRATEGY_RUN, ARCHIVE, EXPERIMENT
 }
 
 data class StrategyRunParams(
@@ -58,6 +59,7 @@ fun MedalApp() {
         Triple(Screen.ACCOUNT, "账号", Pair(Icons.Filled.Person, Icons.Outlined.Person)),
         Triple(Screen.ARCHIVE, "存档", Pair(Icons.Filled.Archive, Icons.Outlined.Archive)),
         Triple(Screen.SETTINGS, "设置", Pair(Icons.Filled.Settings, Icons.Outlined.Settings)),
+        Triple(Screen.EXPERIMENT, "实验", Pair(Icons.Filled.Preview, Icons.Outlined.Preview)),
     )
 
     var medalAppLogoAlertDialogIsVisible by remember { mutableStateOf(false) }
@@ -158,6 +160,8 @@ fun MedalApp() {
                                 )
                             }
                         }
+
+                        Screen.EXPERIMENT -> ExperimentScreen()
                     }
                 }
             }

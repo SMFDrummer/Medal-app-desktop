@@ -211,9 +211,10 @@ fun StrategyRunScreen(
             Box(modifier = Modifier.weight(1f)) {
                 LazyColumn(
                     state = listState,
-                    modifier = Modifier.fillMaxHeight().padding(16.dp),
+                    modifier = Modifier.fillMaxHeight().padding(horizontal = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    item { Spacer(Modifier.height(16.dp)) }
                     items(callbackList) { callback ->
                         StrategyCallbackCard(
                             modifier = Modifier.clickable {
@@ -226,6 +227,7 @@ fun StrategyRunScreen(
                             content = callback.content,
                         )
                     }
+                    item { Spacer(Modifier.height(16.dp)) }
                 }
                 
                 // 当不在底部时显示 FAB
@@ -341,7 +343,7 @@ fun StrategyRunScreen(
 }
 
 @Composable
-private fun StrategyCallbackCard(
+fun StrategyCallbackCard(
     modifier: Modifier = Modifier,
     packetId: String? = null,
     status: CardStatus,

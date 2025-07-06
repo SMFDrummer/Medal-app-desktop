@@ -30,7 +30,7 @@ val features = buildFeatures {
         description { "电鳗香蕉碎片，贪吃龙草碎片，守卫菇碎片，进阶书碎片\n万能碎片，钻石，追击币，萝卜瓷砖基因，高级神器祝福券" }
         strategy { 获取云端存档() }
         analyze { context, user ->
-            context.responses["V316"]?.getJsonObject("d")?.apply {
+            context.responses["V316"]?.get("d")?.asObject?.apply {
                 getJsonArray("pcl")?.apply {
                     find { it.asObject?.getString("i") == "22000830" }?.asObject?.getString("q")
                         ?.let { user.properties["22000830"] = it }
@@ -49,6 +49,8 @@ val features = buildFeatures {
                         ?.let { user.properties["23093"] = it }
                     find { it.asObject?.getString("i") == "23124" }?.asObject?.getString("q")
                         ?.let { user.properties["23124"] = it }
+                    find { it.asObject?.getString("i") == "23098" }?.asObject?.getString("q")
+                        ?.let { user.properties["23098"] = it }
                 }
 
                 getJsonArray("gene")?.apply {
