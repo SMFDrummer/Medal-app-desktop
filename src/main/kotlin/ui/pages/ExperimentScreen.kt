@@ -194,19 +194,27 @@ private fun LazyItemScope.ChangePasswordCard() {
                     enabled = phoneOrUserId.isNotEmpty() && password.isNotEmpty() && (newPassWord.isNotEmpty() || isRandom),
                     onClick = {
                         scope.launch(Dispatchers.IO) {
+                            val randomPassword = UUID.randomUUID().toString().split("-")[4]
                             runCatching {
                                 logger.i("登录账号：$phoneOrUserId")
                                 val (userId, token) = login(phoneOrUserId, password.getMD5())
                                 modifyPassword(
                                     token, userId, password, when (isRandom) {
-                                        true -> UUID.randomUUID().toString().split("-")[4]
+                                        true -> randomPassword
                                         false -> newPassWord
                                     }
                                 )
                             }.onFailure {
                                 logger.i("密码修改失败：${it.message ?: it.toString()}")
                             }.onSuccess {
-                                logger.i("密码修改成功：账号：$phoneOrUserId 密码：$newPassWord")
+                                logger.i(
+                                    "密码修改成功：账号：$phoneOrUserId 密码：${
+                                        when (isRandom) {
+                                            true -> randomPassword
+                                            false -> newPassWord
+                                        }
+                                    }"
+                                )
                             }
                         }
                     }
