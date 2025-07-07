@@ -40,6 +40,7 @@ import ui.pages.StrategyCallbackCard
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 import java.io.File
+import java.util.*
 
 @Composable
 fun ExperimentScreen() {
@@ -134,6 +135,7 @@ private fun LazyItemScope.ChangePasswordCard() {
     var phoneOrUserId by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var newPassWord by remember { mutableStateOf("") }
+    var isRandom by remember { mutableStateOf(false) }
 
     val logger = koinViewModel<ExperimentViewModel>()
     val scope = rememberCoroutineScope()
@@ -169,22 +171,38 @@ private fun LazyItemScope.ChangePasswordCard() {
                     onValueChange = { password = it },
                     placeholder = { Text("密码") },
                 )
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = newPassWord,
-                    onValueChange = { newPassWord = it },
-                    placeholder = { Text("新密码") },
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier.weight(1f),
+                        value = newPassWord,
+                        enabled = !isRandom,
+                        onValueChange = { newPassWord = it },
+                        placeholder = { Text("新密码") },
+                    )
+                    Switch(
+                        checked = isRandom,
+                        onCheckedChange = { isRandom = it },
+                    )
+                    Text("随机", style = MedalTheme.typography.body1)
+                }
                 Button(
                     Modifier.fillMaxWidth(),
                     text = "修改",
-                    enabled = phoneOrUserId.isNotEmpty() && password.isNotEmpty() && newPassWord.isNotEmpty(),
+                    enabled = phoneOrUserId.isNotEmpty() && password.isNotEmpty() && (newPassWord.isNotEmpty() || isRandom),
                     onClick = {
                         scope.launch(Dispatchers.IO) {
                             runCatching {
                                 logger.i("登录账号：$phoneOrUserId")
                                 val (userId, token) = login(phoneOrUserId, password.getMD5())
-                                modifyPassword(token, userId, password, newPassWord)
+                                modifyPassword(
+                                    token, userId, password, when (isRandom) {
+                                        true -> UUID.randomUUID().toString().split("-")[4]
+                                        false -> newPassWord
+                                    }
+                                )
                             }.onFailure {
                                 logger.i("密码修改失败：${it.message ?: it.toString()}")
                             }.onSuccess {
@@ -201,6 +219,7 @@ private fun LazyItemScope.ChangePasswordCard() {
 @Composable
 private fun LazyItemScope.ChangePasswordBatchCard() {
     var newPassWord by remember { mutableStateOf("") }
+    var isRandom by remember { mutableStateOf(false) }
 
     val logger = koinViewModel<ExperimentViewModel>()
     val scope = rememberCoroutineScope()
@@ -222,14 +241,21 @@ private fun LazyItemScope.ChangePasswordBatchCard() {
                 )
 
                 for (user in data.users.filter { it.activate && !it.banned && !it.password.isNullOrEmpty() }) {
+                    val randomPassword = UUID.randomUUID().toString().split("-")[4]
                     runCatching {
                         logger.i("登录账号：${user.userId.content}")
                         val (userId, token) = login(user.userId.content, user.password!!.getMD5())
-                        modifyPassword(token, userId, user.password!!, newPassWord)
+                        modifyPassword(
+                            token, userId, user.password!!, when (isRandom) {
+                                true -> randomPassword
+                                false -> newPassWord
+                            }
+                        )
                     }.onFailure {
                         logger.i("账号：${user.userId.content} 修改密码出错：${it.message ?: it.toString()}")
                     }.onSuccess {
                         logger.i("账号：${user.userId.content} 修改密码成功")
+                        user.password = randomPassword
                         user.activate = false
                     }
 
@@ -270,16 +296,27 @@ private fun LazyItemScope.ChangePasswordBatchCard() {
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = newPassWord,
-                    onValueChange = { newPassWord = it },
-                    placeholder = { Text("新密码") },
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier.weight(1f),
+                        value = newPassWord,
+                        enabled = !isRandom,
+                        onValueChange = { newPassWord = it },
+                        placeholder = { Text("新密码") },
+                    )
+                    Switch(
+                        checked = isRandom,
+                        onCheckedChange = { isRandom = it },
+                    )
+                    Text("随机", style = MedalTheme.typography.body1)
+                }
                 Button(
                     Modifier.fillMaxWidth(),
                     text = "执行",
-                    enabled = newPassWord.isNotEmpty(),
+                    enabled = newPassWord.isNotEmpty() || isRandom,
                     onClick = {
                         state.value = true
                     }
