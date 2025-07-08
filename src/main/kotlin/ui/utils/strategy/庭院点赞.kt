@@ -10,7 +10,13 @@ fun 庭院点赞(id: String) = buildStrategy {
         i = "V722"
         r = 0
         parse("""
-            {"id":"$id","pi":"{{pi}}","sk":"{{sk}}","t":"1","ui":"{{ui}}"}
+            {
+              "id": "$id",
+              "pi": "{{pi}}",
+              "sk": "{{sk}}",
+              "t": "1",
+              "ui": "{{ui}}"
+            }
         """.trimIndent())
 
         onSuccess { true }

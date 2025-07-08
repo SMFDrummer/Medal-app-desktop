@@ -69,6 +69,7 @@ suspend fun StrategyConfig.runWith(
     onStrategyException: (StrategyException) -> Unit,
     onStrategyComplete: (Boolean) -> Unit,
     onError: (Throwable) -> Unit,
+    checkSuccess: ((StrategyContext) -> Boolean)? = null,
     onContextAnalyze: ((StrategyContext, User) -> Unit)? = null
 ) = runCatching {
     val successCounter = AtomicInt()
@@ -105,6 +106,9 @@ suspend fun StrategyConfig.runWith(
                             if (error.actual == 20507) {
                                 user.banned = true
                             }
+                            if (error.actual == 75051 || error.actual == 75052) {
+                                throw InvalidInviteCodeException("邀请码异常")
+                            }
                             onStrategyException(error)
                         }
 
@@ -113,6 +117,9 @@ suspend fun StrategyConfig.runWith(
                     error(error)
                 },
                 { success ->
+                    checkSuccess?.let {
+                        if (!it(context)) error("未满足条件")
+                    }
                     user.activate = false
                 }
             )
@@ -120,8 +127,10 @@ suspend fun StrategyConfig.runWith(
             when (error) {
                 is IllegalStateException -> {
                     if (error.message?.contains("密码错误") == true) user.password = null
-                    user.activate = false
+                    if (error.message?.contains("未满足条件") == false) user.activate = false
                 }
+
+                is InvalidInviteCodeException -> throw error
 
                 else -> onError(error)
             }
@@ -168,3 +177,5 @@ fun StrategyException.getErrorString() = when(this) {
     is StrategyException.CredentialExpired -> "凭证已过期: 错误码 $code"
     is StrategyException.CredentialRefreshError -> "凭证刷新错误: ${cause.message}"
 }
+
+class InvalidInviteCodeException(message: String) : Exception(message) // Temp

@@ -21,18 +21,26 @@ import components.foundation.ToggleState
 import components.foundation.rememberToggleState
 import data.AppSettings
 import data.SettingsDataStore
+import io.github.smfdrummer.enums.Channel
 import io.github.smfdrummer.medal_app_desktop.ui.utils.Users
+import io.github.smfdrummer.medal_app_desktop.ui.utils.getErrorString
+import io.github.smfdrummer.medal_app_desktop.ui.utils.runWith
+import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.刷邀请码_安卓
+import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.刷邀请码_苹果
 import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.CardStatus
 import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.ExperimentViewModel
 import io.github.smfdrummer.network.getMD5
 import io.github.smfdrummer.network.service.login
-import io.github.smfdrummer.utils.json.JsonFeature
-import io.github.smfdrummer.utils.json.fromJson
-import io.github.smfdrummer.utils.json.jsonWith
+import io.github.smfdrummer.utils.json.*
+import io.github.smfdrummer.utils.strategy.ContextCallback
+import io.github.smfdrummer.utils.strategy.StrategyException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import network.service.modifyPassword
 import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
@@ -125,6 +133,7 @@ private fun FunctionList() {
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        item { InviteCard() }
         item { ChangePasswordCard() }
         item { ChangePasswordBatchCard() }
     }
@@ -325,6 +334,119 @@ private fun LazyItemScope.ChangePasswordBatchCard() {
                     Modifier.fillMaxWidth(),
                     text = "执行",
                     enabled = newPassWord.isNotEmpty() || isRandom,
+                    onClick = {
+                        state.value = true
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LazyItemScope.InviteCard() {
+    var codes by remember { mutableStateOf("") }
+
+    val logger = koinViewModel<ExperimentViewModel>()
+    val scope = rememberCoroutineScope()
+    val state = rememberToggleState()
+
+    val settingsDataStore = getKoin().get<SettingsDataStore>()
+    val settings by settingsDataStore.settings.collectAsState(initial = AppSettings())
+
+    val contextCallback = object : ContextCallback {
+        override fun onPacketStart(packetId: String, request: JsonObject) {
+            logger.i("$packetId\n$request")
+        }
+
+        override fun onPacketSuccess(packetId: String, response: JsonObject) {
+            logger.i("$packetId\n$response")
+        }
+
+        override fun onPacketFailure(
+            packetId: String,
+            error: StrategyException
+        ) {
+            logger.i("$packetId\n${error.getErrorString()}")
+        }
+
+        override fun onPacketRetry(
+            packetId: String,
+            attempt: Int,
+            error: StrategyException
+        ) {
+            logger.i("$packetId($attempt)\n${error.getErrorString()}")
+        }
+
+        override fun onStrategyComplete(success: Boolean) {
+            // do nothing
+        }
+
+    }
+
+    AccountDialog(
+        state = state,
+        functionName = "刷邀请码 - 渠道：${Channel.entries.first { it.channelId == settings.channel }.channelName}"
+    ) { path ->
+        scope.launch(Dispatchers.IO) {
+            codes.lineSequence().forEach { code ->
+                when (settings.channel) {
+                    -1 -> 刷邀请码_苹果(code)
+                    else -> 刷邀请码_安卓(code)
+                }.runWith(
+                    userPath = path,
+                    channel = settings.channel,
+                    contextCallback = contextCallback,
+                    additionalCutoff = { it >= 12 },
+                    onUserChanged = { logger.i("更换账号：${it.userId.content}") },
+                    onStrategyException = { logger.i("发生错误：${it.getErrorString()}") },
+                    onStrategyComplete = { /* do nothing */ },
+                    onError = { logger.i("错误：${it.message ?: it.toString()}") },
+                    checkSuccess = {
+                        it.responses["V876"]?.get("d")?.asObject?.getJsonArray("bl")?.contains(
+                            buildJsonObject {
+                                put("i", 3008)
+                                put("q", 288)
+                            }
+                        ) ?: false
+                    }
+                )
+            }
+        }
+    }
+
+    OutlinedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateItem()
+    ) {
+        Accordion(
+            headerContent = {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                ) {
+                    Text("刷邀请码", style = MedalTheme.typography.body1)
+                    Text(
+                        "请务必优先检查渠道设置是否正确，设置错误会导致无法运行，运行中途请勿修改渠道信息",
+                        style = MedalTheme.typography.label1
+                    )
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = codes,
+                    onValueChange = { codes = it },
+                    placeholder = { Text("邀请码，每行一个") },
+                )
+                Button(
+                    Modifier.fillMaxWidth(),
+                    text = "执行",
+                    enabled = codes.isNotEmpty(),
                     onClick = {
                         state.value = true
                     }

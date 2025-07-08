@@ -1,10 +1,7 @@
 package io.github.smfdrummer.medal_app_desktop.di
 
 import io.github.smfdrummer.medal_app_desktop.ui.utils.buildFeatures
-import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.庭院点赞
-import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.获取云端存档
-import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.账号激活
-import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.领取兑换码
+import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.*
 import io.github.smfdrummer.utils.json.*
 
 val features = buildFeatures {
@@ -71,6 +68,116 @@ val features = buildFeatures {
         inputs {
             text("c") { "兑换码" }
         }
-        strategy { values -> 领取兑换码(values["c"]!!) }
+        strategy { values -> 兑换物品(values["c"]!!) }
+    }
+
+    feature {
+        title { "七日指南" }
+        description { "七日指南一键领取" }
+        strategy { 七日指南() }
+    }
+
+    feature {
+        title { "刷追击币" }
+        description { "购买电池数量 q，刷取次数 count" }
+        inputs {
+            number("q") { "购买电池数量" }
+            number("count") { "刷取次数" }
+        }
+        strategy { values -> 刷追击币(values["q"]!!.toInt(), values["count"]!!.toInt()) }
+    }
+
+    feature {
+        title { "刷通行证" }
+        description { "庆典任务奖励领取与抽奖" }
+        strategy { 刷通行证() }
+    }
+
+    feature {
+        title { "双人对决宗师锅" }
+        description { "双人对决上宗师领取奖励" }
+        strategy { 双人对决宗师() }
+    }
+
+    feature {
+        title { "双人对决抽奖" }
+        description { "双人对决抽奖" }
+        strategy { 双人对决抽奖() }
+    }
+
+    feature {
+        title { "回忆之旅普通关卡" }
+        description { "回忆普通关卡速通" }
+        strategy { 回忆之旅普通() }
+    }
+
+    feature {
+        title { "回忆之旅困难关卡" }
+        description { "回忆困难关卡速通" }
+        strategy { 回忆之旅困难() }
+    }
+
+    feature {
+        title { "回忆之旅成就" }
+        description { "回忆成就解锁" }
+        strategy { 回忆之旅成就() }
+    }
+
+    feature {
+        title { "回忆之旅兑换" }
+        description { "兑换数量 ci，兑换物品 gi，兑换货币 mi，自定义数量 q" }
+        inputs {
+            number("ci") { "兑换数量" }
+            number("gi") { "兑换物品" }
+            number("mi") { "兑换货币" }
+            number("q") { "自定义数量" }
+        }
+        strategy { values ->
+            回忆之旅兑换(
+                values["ci"]!!.toInt(),
+                values["gi"]!!.toInt(),
+                values["mi"]!!.toInt(),
+                values["q"]!!.toInt()
+            )
+        }
+    }
+
+    feature {
+        title { "宝藏线索" }
+        description { "戴夫宝藏线索300" }
+        strategy { 宝藏线索() }
+    }
+
+    feature {
+        title { "植物家族重置" }
+        description { "家族序号 fi" }
+        inputs {
+            number("fi") { "家族序号" }
+        }
+        strategy { values -> 植物家族重置(values["fi"]!!.toInt()) }
+    }
+
+    feature {
+        title { "碎片挑战" }
+        description { "碎片挑战仙人掌" }
+        strategy { 碎片挑战() }
+    }
+
+    feature {
+        title { "章鱼神器" }
+        description { "领取章鱼神器" }
+        strategy { 章鱼神器() }
+    }
+
+    feature {
+        title { "追击传奇" }
+        description { "追击传奇一键每周700钻石" }
+        strategy { 追击传奇() }
+    }
+
+    feature {
+        title { "追击线索" }
+        description { "追击指南线索300" }
+        strategy { 追击线索() }
     }
 }

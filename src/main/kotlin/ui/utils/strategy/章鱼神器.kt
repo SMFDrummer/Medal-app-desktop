@@ -1,27 +1,31 @@
 package io.github.smfdrummer.medal_app_desktop.ui.utils.strategy
 
-import io.github.smfdrummer.common.platformConfig
 import io.github.smfdrummer.utils.strategy.buildStrategy
 
-fun 兑换物品(c: String) = buildStrategy {
+fun 章鱼神器() = buildStrategy {
     version = 1
-    description = "领取指定兑换码"
+    description = "领取章鱼神器"
 
     packet {
-        i = "V330"
+        i = "V900"
 
         parse(
             """
             {
-              "c": "$c",
-              "ch": "${platformConfig.channel.packageName}",
               "pi": "{{pi}}",
+              "pl": [
+                {
+                  "i": 60006,
+                  "q": 1
+                }
+              ],
               "sk": "{{sk}}",
               "ui": "{{ui}}"
             }
+
         """.trimIndent()
         )
 
-        onSuccess { true }
+        onFailure { false }
     }
 }

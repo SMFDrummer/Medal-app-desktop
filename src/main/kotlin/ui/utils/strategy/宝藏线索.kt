@@ -1,27 +1,26 @@
 package io.github.smfdrummer.medal_app_desktop.ui.utils.strategy
 
-import io.github.smfdrummer.common.platformConfig
 import io.github.smfdrummer.utils.strategy.buildStrategy
 
-fun 兑换物品(c: String) = buildStrategy {
+fun 宝藏线索() = buildStrategy {
     version = 1
-    description = "领取指定兑换码"
+    description = "戴夫宝藏线索300"
 
     packet {
-        i = "V330"
+        i = "V795"
 
         parse(
             """
             {
-              "c": "$c",
-              "ch": "${platformConfig.channel.packageName}",
+              "ai": "10749",
+              "g": "1",
               "pi": "{{pi}}",
+              "s": "300",
               "sk": "{{sk}}",
+              "ti": "1002",
               "ui": "{{ui}}"
             }
         """.trimIndent()
         )
-
-        onSuccess { true }
     }
 }
