@@ -4,19 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="0.4-hotfix">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/ExperimentScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/ExperimentScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/StrategyRunScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/StrategyRunScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyRun.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyRun.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/刷邀请码.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/刷邀请码.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/ExperimentViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/ExperimentViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/HomeViewModel.kt" afterDir="false" />
+    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-build.10">
+      <change beforePath="$PROJECT_DIR$/../Medal-core/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Requester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Requester.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/service/Login.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/service/Login.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/utils/strategy/StrategyManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/utils/strategy/StrategyManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/utils/strategy/extensions/V201.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/utils/strategy/extensions/V201.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -301,7 +294,7 @@
       <workItem from="1751984526431" duration="14942000" />
       <workItem from="1752080195621" duration="6652000" />
       <workItem from="1752090565747" duration="1893000" />
-      <workItem from="1752104613951" duration="350000" />
+      <workItem from="1752104613951" duration="792000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -471,7 +464,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752002417884</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="1.0.0-build.10">
+      <option name="closed" value="true" />
+      <created>1752105326333</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1752105326333</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -486,7 +487,8 @@
     <MESSAGE value="1.0.0-build.8" />
     <MESSAGE value="1.0.0-build.9" />
     <MESSAGE value="0.4-hotfix" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.4-hotfix" />
+    <MESSAGE value="1.0.0-build.10" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.0-build.10" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
