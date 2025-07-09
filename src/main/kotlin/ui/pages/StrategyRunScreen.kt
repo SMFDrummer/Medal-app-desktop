@@ -67,36 +67,13 @@ fun StrategyRunScreen(
     val runningStatus by strategyViewModel.runningStatus.collectAsState()
 
     val listState = rememberLazyListState()
-    
-    // 计算是否在底部
-    val isAtBottom = remember {
-        derivedStateOf {
-            if (callbackList.isEmpty()) true
-            else {
-                val layoutInfo = listState.layoutInfo
-                val visibleItemsInfo = layoutInfo.visibleItemsInfo
-                if (visibleItemsInfo.isEmpty()) {
-                    false
-                } else {
-                    // 获取最后一个可见项
-                    val lastItem = visibleItemsInfo.last()
-                    // 获取最后一个可见项的底部位置
-                    val lastItemBottom = lastItem.offset + lastItem.size
-                    // 获取可视区域的总高度
-                    val viewportHeight = layoutInfo.viewportSize.height
-                    // 增加容差值，设置为 50dp
-                    val tolerance = 50
-                    // 如果最后一个可见项的底部位置接近或等于可视区域高度，则认为在底部
-                    lastItemBottom >= viewportHeight - tolerance
-                }
-            }
-        }
-    }
-    
-    // 自动滚动到底部
-    LaunchedEffect(callbackList.size) {
-        if (callbackList.isNotEmpty() && isAtBottom.value) {
-            listState.animateScrollToItem(callbackList.size - 1)
+
+    var autoScrollEnabled by remember { mutableStateOf(true) }
+
+    // 每次 logs 更新都滚到底部（仅当开启自动滚动）
+    LaunchedEffect(callbackList.size, autoScrollEnabled) {
+        if (autoScrollEnabled && callbackList.isNotEmpty()) {
+            listState.animateScrollToItem(callbackList.lastIndex)
         }
     }
 
@@ -229,27 +206,29 @@ fun StrategyRunScreen(
                     }
                     item { Spacer(Modifier.height(16.dp)) }
                 }
-                
-                // 当不在底部时显示 FAB
-                if (!isAtBottom.value) {
-                    FloatingActionButton(
-                        containerColor = MedalTheme.colors.primary,
-                        contentColor = MedalTheme.colors.onPrimary,
-                        onClick = {
-                            scope.launch {
-                                listState.animateScrollToItem(callbackList.size - 1)
+
+                FloatingActionButton(
+                    containerColor = MedalTheme.colors.primary,
+                    contentColor = MedalTheme.colors.onPrimary,
+                    onClick = {
+                        scope.launch {
+                            if (!autoScrollEnabled) {
+                                // 回到底部并开启自动滚动
+                                listState.animateScrollToItem(callbackList.lastIndex)
                             }
-                        },
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(16.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
-                            tint = MedalTheme.colors.onPrimary,
-                            contentDescription = "滚动到底部"
-                        )
-                    }
+                            autoScrollEnabled = !autoScrollEnabled
+                        }
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                ) {
+                    val icon = if (autoScrollEnabled) Icons.Default.Pause else Icons.Default.PlayArrow
+                    Icon(
+                        icon,
+                        contentDescription = if (autoScrollEnabled) "Pause auto-scroll" else "Resume auto-scroll",
+                        tint = MedalTheme.colors.onPrimary
+                    )
                 }
             }
             VerticalDivider()
@@ -385,7 +364,7 @@ fun StrategyCallbackCard(
                     }
                 }
 
-                Text(content)
+                Text(content, maxLines = 4)
             }
         }
     }

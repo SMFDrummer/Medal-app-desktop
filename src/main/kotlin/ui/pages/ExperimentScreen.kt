@@ -8,6 +8,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +26,7 @@ import components.foundation.rememberToggleState
 import data.AppSettings
 import data.SettingsDataStore
 import io.github.smfdrummer.enums.Channel
+import io.github.smfdrummer.medal_app_desktop.ui.utils.User
 import io.github.smfdrummer.medal_app_desktop.ui.utils.Users
 import io.github.smfdrummer.medal_app_desktop.ui.utils.getErrorString
 import io.github.smfdrummer.medal_app_desktop.ui.utils.runWith
@@ -57,35 +62,14 @@ fun ExperimentScreen() {
 
     val listState = rememberLazyListState()
     val clipboard = Toolkit.getDefaultToolkit().systemClipboard
+    val scope = rememberCoroutineScope()
 
-    val isAtBottom = remember {
-        derivedStateOf {
-            if (log.isEmpty()) true
-            else {
-                val layoutInfo = listState.layoutInfo
-                val visibleItemsInfo = layoutInfo.visibleItemsInfo
-                if (visibleItemsInfo.isEmpty()) {
-                    false
-                } else {
-                    // 获取最后一个可见项
-                    val lastItem = visibleItemsInfo.last()
-                    // 获取最后一个可见项的底部位置
-                    val lastItemBottom = lastItem.offset + lastItem.size
-                    // 获取可视区域的总高度
-                    val viewportHeight = layoutInfo.viewportSize.height
-                    // 增加容差值，设置为 50dp
-                    val tolerance = 50
-                    // 如果最后一个可见项的底部位置接近或等于可视区域高度，则认为在底部
-                    lastItemBottom >= viewportHeight - tolerance
-                }
-            }
-        }
-    }
+    var autoScrollEnabled by remember { mutableStateOf(true) }
 
-    // 自动滚动到底部
-    LaunchedEffect(log.size) {
-        if (log.isNotEmpty() && isAtBottom.value) {
-            listState.animateScrollToItem(log.size - 1)
+    // 每次 logs 更新都滚到底部（仅当开启自动滚动）
+    LaunchedEffect(log.size, autoScrollEnabled) {
+        if (autoScrollEnabled && log.isNotEmpty()) {
+            listState.animateScrollToItem(log.lastIndex)
         }
     }
 
@@ -101,7 +85,9 @@ fun ExperimentScreen() {
             HorizontalDivider()
             FunctionList()
         }
+
         VerticalDivider()
+
         Box(modifier = Modifier.weight(2f)) {
             LazyColumn(
                 state = listState,
@@ -122,10 +108,35 @@ fun ExperimentScreen() {
                 }
                 item { Spacer(Modifier.height(16.dp)) }
             }
+
+            FloatingActionButton(
+                containerColor = MedalTheme.colors.primary,
+                contentColor = MedalTheme.colors.onPrimary,
+                onClick = {
+                    scope.launch {
+                        if (!autoScrollEnabled) {
+                            // 回到底部并开启自动滚动
+                            listState.animateScrollToItem(log.lastIndex)
+                        }
+                        autoScrollEnabled = !autoScrollEnabled
+                    }
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
+            ) {
+                val icon = if (autoScrollEnabled) Icons.Default.Pause else Icons.Default.PlayArrow
+                Icon(
+                    icon,
+                    contentDescription = if (autoScrollEnabled) "Pause auto-scroll" else "Resume auto-scroll",
+                    tint = MedalTheme.colors.onPrimary
+                )
+            }
         }
     }
-
 }
+
+
 
 @Composable
 private fun FunctionList() {
@@ -356,11 +367,11 @@ private fun LazyItemScope.InviteCard() {
 
     val contextCallback = object : ContextCallback {
         override fun onPacketStart(packetId: String, request: JsonObject) {
-            logger.i("$packetId\n$request")
+            logger.i("请求 $packetId\n$request")
         }
 
         override fun onPacketSuccess(packetId: String, response: JsonObject) {
-            logger.i("$packetId\n$response")
+            logger.i("响应 $packetId\n$response")
         }
 
         override fun onPacketFailure(
@@ -449,6 +460,34 @@ private fun LazyItemScope.InviteCard() {
                     enabled = codes.isNotEmpty(),
                     onClick = {
                         state.value = true
+                    }
+                )
+                Button(
+                    Modifier.fillMaxWidth(),
+                    text = "生成随机 IOS 账号库",
+                    enabled = settings.channel == -1,
+                    variant = ButtonVariant.PrimaryOutlined,
+                    onClick = {
+                        scope.launch(Dispatchers.IO) {
+                            val users = mutableListOf<User>()
+                            repeat(100) {
+                                val user =
+                                    User(userId = primitive { "11111111-1234-1234-1234-${(111111111111..999999999999).random()}" })
+                                users.add(user)
+                            }
+
+                            File("随机_IOS_${System.currentTimeMillis()}.json").apply {
+                                writeText(
+                                    jsonWith(
+                                        JsonFeature.PrettyPrint,
+                                        JsonFeature.ImplicitNulls,
+                                        JsonFeature.IgnoreUnknownKeys
+                                    ).encodeToString(Users(users))
+                                )
+                                settingsDataStore.addAccounts(listOf(this.absolutePath))
+                                logger.i("已生成随机账号库：${this.name}")
+                            }
+                        }
                     }
                 )
             }

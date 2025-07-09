@@ -17,6 +17,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 
 @Serializable
 data class Users(@SerialName("Users") val users: List<User>)
@@ -98,6 +100,7 @@ suspend fun StrategyConfig.runWith(
                     else -> if (user.userId.content.isNotEmpty() && !user.password.isNullOrEmpty())
                         OfficialProvider(user.userId.content, user.password!!.getMD5()) else null
                 },
+                isRandom = true,
                 context = context
             ).fold(
                 { error ->
@@ -151,7 +154,7 @@ suspend fun StrategyConfig.runWith(
         onContextAnalyze?.invoke(context, user)
         
         fileMutex.withLock {
-            file.writeText(
+            file.atomicWriteText(
                 jsonWith(
                     JsonFeature.PrettyPrint,
                     JsonFeature.ImplicitNulls,
@@ -179,3 +182,9 @@ fun StrategyException.getErrorString() = when(this) {
 }
 
 class InvalidInviteCodeException(message: String) : Exception(message) // Temp
+
+private fun File.atomicWriteText(content: String) {
+    val tmp = toPath().resolveSibling("$nameWithoutExtension.tmp")
+    Files.writeString(tmp, content)
+    Files.move(tmp, toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
+}

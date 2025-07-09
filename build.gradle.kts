@@ -51,6 +51,8 @@ dependencies {
     implementation("io.arrow-kt:arrow-fx-coroutines")
     implementation("io.arrow-kt:arrow-optics:2.1.0")
     ksp("io.arrow-kt:arrow-optics-ksp-plugin:2.1.0")
+
+    // implementation("com.squareup.okio:okio:3.10.2")
 }
 
 compose.desktop {
