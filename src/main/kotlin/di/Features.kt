@@ -180,4 +180,10 @@ val features = buildFeatures {
         description { "追击指南线索300" }
         strategy { 追击线索() }
     }
+
+    feature {
+        title { "宝箱养号" }
+        description { "宝箱养号" }
+        strategy { 宝箱养号() }
+    }
 }

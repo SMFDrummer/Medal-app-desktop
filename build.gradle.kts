@@ -31,7 +31,7 @@ dependencies {
     implementation(compose.components.resources)
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
-    api("io.github.smfdrummer:medal-core:0.4")
+    api("io.github.smfdrummer:medal-core:0.5")
     api("com.nomanr:composables:1.1.0")
     implementation("io.github.fornewid:material-motion-compose-core:2.0.1")
 
