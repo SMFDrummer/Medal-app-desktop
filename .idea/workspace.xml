@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="0.5">
+    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-build.11">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/data/AppSettings.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/data/AppSettings.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/SettingsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/SettingsScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +51,24 @@
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="compose desktop" type="c8890929:TasksNode$1" />
               </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Medal-app-desktop" type="f1a62948:ProjectNode" />
+                <item name="Medal-core" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Medal-app-desktop" type="f1a62948:ProjectNode" />
+                <item name="Medal-core" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Medal-app-desktop" type="f1a62948:ProjectNode" />
+                <item name="Medal-core" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="publishing" type="c8890929:TasksNode$1" />
+              </path>
             </expand>
             <select />
           </tree_state>
@@ -90,43 +110,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Medal-app-desktop [:Medal-core:build].executor": "Run",
-    "Gradle.Medal-app-desktop [clean].executor": "Run",
-    "Gradle.Medal-app-desktop [packageDistributionForCurrentOS].executor": "Run",
-    "Gradle.Medal-app-desktop [packageMsi].executor": "Run",
-    "Gradle.Medal-app-desktop [package].executor": "Run",
-    "Gradle.Preview: MainKt.App.executor": "Run",
-    "Gradle.Preview: ui.MedalAppKt.MedalApp.executor": "Run",
-    "Gradle.desktop.executor": "Debug",
-    "Gradle.下载源代码.executor": "Run",
-    "Gradle.构建 Medal-app-desktop.executor": "Run",
-    "Gradle.🔥main [].executor": "Run",
-    "Kotlin.CryptoKt.executor": "Debug",
-    "Kotlin.MainKt.executor": "Debug",
-    "Kotlin.TestKt.executor": "Debug",
-    "Kotlin.刷邀请码Kt.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/smfdrummer/IdeaProjects/Medal-app-desktop/src/main/kotlin/components/foundation",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "问题",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2678161",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Medal-app-desktop [:Medal-core:build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Medal-app-desktop [:Medal-core:publishToMavenLocal].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Medal-app-desktop [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Medal-app-desktop [packageDistributionForCurrentOS].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Medal-app-desktop [packageMsi].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Medal-app-desktop [package].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Preview: MainKt.App.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Preview: ui.MedalAppKt.MedalApp.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.desktop.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.下载源代码.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.构建 Medal-app-desktop.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.🔥main [].executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.CryptoKt.executor&quot;: &quot;Debug&quot;,
+    &quot;Kotlin.MainKt.executor&quot;: &quot;Debug&quot;,
+    &quot;Kotlin.TestKt.executor&quot;: &quot;Debug&quot;,
+    &quot;Kotlin.刷邀请码Kt.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/smfdrummer/IdeaProjects/Medal-app-desktop/src/main/kotlin/components/foundation&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;问题&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2678161&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/kotlin/components/foundation" />
@@ -142,7 +163,7 @@
       <recent name="io.github.smfdrummer.medal_app_desktop.components.components.card" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Medal-app-desktop [:Medal-core:publishToMavenLocal]">
+  <component name="RunManager" selected="Kotlin.MainKt">
     <configuration default="true" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" IS_LOCATION_SIMULATION_SUPPORTED="false" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
       <embedded_app_extension_list />
       <method v="2">
@@ -246,9 +267,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.MainKt" />
         <item itemvalue="Gradle.Medal-app-desktop [:Medal-core:publishToMavenLocal]" />
         <item itemvalue="Gradle.Medal-app-desktop [:Medal-core:build]" />
-        <item itemvalue="Kotlin.MainKt" />
         <item itemvalue="Kotlin.CryptoKt" />
         <item itemvalue="Gradle.🔥main []" />
       </list>
@@ -315,7 +336,7 @@
       <workItem from="1752090565747" duration="1893000" />
       <workItem from="1752104613951" duration="860000" />
       <workItem from="1752149625738" duration="31000" />
-      <workItem from="1752231901818" duration="113000" />
+      <workItem from="1752231901818" duration="3128000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -509,7 +530,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752105449438</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="1.0.0-build.11">
+      <option name="closed" value="true" />
+      <created>1752232317847</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1752232317847</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -526,7 +555,8 @@
     <MESSAGE value="0.4-hotfix" />
     <MESSAGE value="1.0.0-build.10" />
     <MESSAGE value="0.5" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.5" />
+    <MESSAGE value="1.0.0-build.11" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.0-build.11" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -536,7 +566,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt</url>
-          <line>217</line>
+          <line>218</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

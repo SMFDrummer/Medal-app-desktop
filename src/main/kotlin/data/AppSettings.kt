@@ -13,7 +13,8 @@ import kotlin.io.path.*
 data class AppSettings(
     val darkMode: String = "auto",
     val channel: Int = 208,
-    val accounts: List<String> = emptyList()
+    val accounts: List<String> = emptyList(),
+    val cryptoType: Int = 1
 )
 
 class SettingsDataStore {
@@ -41,8 +42,8 @@ class SettingsDataStore {
                 } else {
                     "auto"
                 }
-                
-                val validChannel = if (loadedSettings.channel == -1 || Channel.entries.any { it.channelId == loadedSettings.channel }) {
+
+                val validChannel = if (Channel.entries.any { it.channelId == loadedSettings.channel }) {
                     loadedSettings.channel
                 } else {
                     208
@@ -57,11 +58,18 @@ class SettingsDataStore {
                         false
                     }
                 }
+
+                val validCryptoType = if (loadedSettings.cryptoType in listOf(1, 2)) {
+                    loadedSettings.cryptoType
+                } else {
+                    1
+                }
                 
                 loadedSettings.copy(
                     darkMode = validDarkMode,
                     channel = validChannel,
-                    accounts = validAccounts
+                    accounts = validAccounts,
+                    cryptoType = validCryptoType
                 )
             } else {
                 AppSettings()
@@ -89,7 +97,7 @@ class SettingsDataStore {
     }
     
     suspend fun setChannel(channel: Int) {
-        val validChannel = if (channel == -1 || Channel.entries.any { it.channelId == channel }) {
+        val validChannel = if (Channel.entries.any { it.channelId == channel }) {
             channel
         } else {
             208
@@ -113,5 +121,14 @@ class SettingsDataStore {
     
     suspend fun removeAccount(path: String) {
         updateSettings { it.copy(accounts = it.accounts.filter { p -> p != path }) }
+    }
+
+    suspend fun setCryptoType(cryptoType: Int) {
+        val validCryptoType = if (cryptoType in listOf(1, 2)) {
+            cryptoType
+        } else {
+            1
+        }
+        updateSettings { it.copy(cryptoType = validCryptoType) }
     }
 } 

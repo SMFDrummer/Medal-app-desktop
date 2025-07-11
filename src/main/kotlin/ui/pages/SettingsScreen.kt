@@ -10,6 +10,7 @@ import components.MedalTheme
 import components.components.*
 import data.AppSettings
 import data.SettingsDataStore
+import io.github.smfdrummer.network.CryptoDefaults
 import kotlinx.coroutines.launch
 import org.koin.compose.getKoin
 
@@ -51,6 +52,31 @@ fun SettingsScreen() {
                             "true" -> "深色模式"
                             "false" -> "浅色模式"
                             else -> "跟随系统"
+                        }
+                    )
+                }
+            }
+        }
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = MedalTheme.colors.surface
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("算法版本（暂不支持切换）")
+                    Text(CryptoDefaults.cryptoType.toString())
+                    Switch(
+                        checked = CryptoDefaults.cryptoType == 2,
+                        enabled = false,
+                        onCheckedChange = {
+                            // TODO()
                         }
                     )
                 }
