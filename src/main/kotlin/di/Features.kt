@@ -186,4 +186,16 @@ val features = buildFeatures {
         description { "宝箱养号" }
         strategy { 宝箱养号() }
     }
+
+    feature {
+        title { "夏日签到" }
+        description { "夏日签到" }
+        strategy { 夏日签到() }
+    }
+
+    feature {
+        title { "菜问装扮" }
+        description { "海螺大作战任务领取和兑换菜问超级装扮" }
+        strategy { 菜问装扮() }
+    }
 }
