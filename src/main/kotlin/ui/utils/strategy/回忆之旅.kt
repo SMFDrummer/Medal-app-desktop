@@ -9,23 +9,21 @@ fun 回忆之旅普通() = buildStrategy {
 
     V303(10836)
 
-    (0..8).forEach {
+    (0..9).forEach {
         packet {
-            i = "V976"
+            i = "V971"
 
             parse(
                 """
                 {
-                  "ctp": "0",
-                  "i": "1",
                   "gl": "$it",
                   "r": "0",
-                  "tgt": "1,2,3",
+                  "tgt": "0,1,2",
                   "pi": "{{pi}}",
                   "sk": "{{sk}}",
-                  "tp": "0",
+                  "tp": "1",
                   "ui": "{{ui}}",
-                  "w": "1"
+                  "wi": "1"
                 }
             """.trimIndent()
             )
@@ -41,21 +39,19 @@ fun 回忆之旅困难() = buildStrategy {
 
     (0..16).forEach {
         packet {
-            i = "V976"
+            i = "V971"
 
             parse(
                 """
                 {
-                  "ctp": "0",
-                  "i": "1",
                   "gl": "$it",
-                  "r": "0",
-                  "tgt": "1,2,3",
+                  "r": "2",
+                  "tgt": "0,1,2",
                   "pi": "{{pi}}",
                   "sk": "{{sk}}",
-                  "tp": "1",
+                  "tp": "2",
                   "ui": "{{ui}}",
-                  "w": "1"
+                  "wi": "1"
                 }
             """.trimIndent()
             )

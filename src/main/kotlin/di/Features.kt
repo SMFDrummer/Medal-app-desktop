@@ -166,7 +166,7 @@ val features = buildFeatures {
     feature {
         title { "章鱼神器" }
         description { "领取章鱼神器" }
-        strategy { 章鱼神器() }
+        strategy { 神器领取() }
     }
 
     feature {
@@ -179,6 +179,12 @@ val features = buildFeatures {
         title { "追击线索" }
         description { "追击指南线索300" }
         strategy { 追击线索() }
+    }
+
+    feature {
+        title { "追击兑换" }
+        description { "追击指南兑换材料：粉尘 + 水晶" }
+        strategy { 追击兑换() }
     }
 
     feature {
@@ -197,5 +203,11 @@ val features = buildFeatures {
         title { "菜问装扮" }
         description { "海螺大作战任务领取和兑换菜问超级装扮" }
         strategy { 菜问装扮() }
+    }
+
+    feature {
+        title { "僵局逃脱" }
+        description { "僵局逃脱" }
+        strategy { 僵局逃脱() }
     }
 }

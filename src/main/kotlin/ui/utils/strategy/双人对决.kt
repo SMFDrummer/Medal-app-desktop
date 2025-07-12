@@ -16,7 +16,7 @@ fun 双人对决宗师() = buildStrategy {
             """
             {
               "bot": "1",
-              "botTimes": "0",
+              "botTimes": "1",
               "pi": "{{pi}}",
               "sk": "{{sk}}",
               "ui": "{{ui}}",
@@ -28,7 +28,7 @@ fun 双人对决宗师() = buildStrategy {
         repeat = 88
     }
 
-    (0..25).forEach {
+    (1..25).forEach {
         packet {
             i = "V831"
 

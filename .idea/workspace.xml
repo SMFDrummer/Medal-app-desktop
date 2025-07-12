@@ -7,7 +7,10 @@
     <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-build.11">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/ArchiveScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/ArchiveScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/双人对决.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/双人对决.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/回忆之旅.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/回忆之旅.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/章鱼神器.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/神器领取.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/追击线索.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/追击线索.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,9 +167,10 @@
     </key>
   </component>
   <component name="RunManager" selected="Kotlin.MainKt">
-    <configuration default="true" type="Application" factoryName="Application">
+    <configuration default="true" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" IS_LOCATION_SIMULATION_SUPPORTED="false" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
+      <embedded_app_extension_list />
       <method v="2">
-        <option name="Make" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="Medal-app-desktop [:Medal-core:build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -338,7 +342,8 @@
       <workItem from="1752231901818" duration="3919000" />
       <workItem from="1752241418681" duration="835000" />
       <workItem from="1752278236928" duration="1211000" />
-      <workItem from="1752279810850" duration="981000" />
+      <workItem from="1752279810850" duration="1159000" />
+      <workItem from="1752281590257" duration="912000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -564,7 +569,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752279608285</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="1.0.0-build.11">
+      <option name="closed" value="true" />
+      <created>1752281036420</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1752281036420</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TerminalProjectNonSharedOptionsProvider">
