@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-build.11">
+    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="0.5">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/data/AppSettings.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/data/AppSettings.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/SettingsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/SettingsScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyRun.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/StrategyRun.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -336,7 +334,9 @@
       <workItem from="1752090565747" duration="1893000" />
       <workItem from="1752104613951" duration="860000" />
       <workItem from="1752149625738" duration="31000" />
-      <workItem from="1752231901818" duration="3128000" />
+      <workItem from="1752231901818" duration="3919000" />
+      <workItem from="1752241418681" duration="835000" />
+      <workItem from="1752278236928" duration="748000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -538,11 +538,38 @@
       <option name="project" value="LOCAL" />
       <updated>1752232317847</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="1.0.0-build.11">
+      <option name="closed" value="true" />
+      <created>1752239170825</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1752239170826</updated>
+    </task>
+    <task id="LOCAL-00027" summary="0.5">
+      <option name="closed" value="true" />
+      <created>1752239184968</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1752239184968</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1.0.0-SNAPSHOT" />
@@ -554,9 +581,9 @@
     <MESSAGE value="1.0.0-build.9" />
     <MESSAGE value="0.4-hotfix" />
     <MESSAGE value="1.0.0-build.10" />
-    <MESSAGE value="0.5" />
     <MESSAGE value="1.0.0-build.11" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.0.0-build.11" />
+    <MESSAGE value="0.5" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.5" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
