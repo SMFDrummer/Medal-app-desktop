@@ -54,6 +54,7 @@ import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 import java.io.File
 import java.util.*
+import kotlin.io.path.Path
 
 @Composable
 fun ExperimentScreen() {
@@ -147,6 +148,81 @@ private fun FunctionList() {
         item { InviteCard() }
         item { ChangePasswordCard() }
         item { ChangePasswordBatchCard() }
+        item { FetchInviteCodeBatchCard() }
+    }
+}
+
+@Composable
+private fun LazyItemScope.FetchInviteCodeBatchCard() {
+    val logger = koinViewModel<ExperimentViewModel>()
+    val scope = rememberCoroutineScope()
+    val state = rememberToggleState()
+
+    AccountDialog(
+        state = state,
+        functionName = "整合邀请码"
+    ) { userPath ->
+        scope.launch(Dispatchers.IO) {
+            runCatching {
+                val file = File(userPath)
+                val data = file.readText().fromJson<Users>(
+                    JsonFeature.ImplicitNulls,
+                    JsonFeature.IgnoreUnknownKeys,
+                    JsonFeature.AllowTrailingComma
+                )
+
+                logger.i("开始整合")
+
+                buildString {
+                    for (user in data.users.filter { it.activate && !it.banned && !it.password.isNullOrEmpty() }) {
+                        user.properties["code"]?.let {
+                            append(it)
+                            append("\n")
+                        }
+                    }
+                }.apply {
+                    Path(file.parent, file.nameWithoutExtension + "_invite_code.txt").toFile().writeText(this)
+                    logger.i("整合结束，文件保存于：${file.parent}${File.separator}${file.nameWithoutExtension}_invite_code.txt")
+                }
+            }.onFailure {
+                logger.i("整合邀请码出错：${it.message ?: it.toString()}")
+            }.onSuccess {
+                logger.i("整合邀请码结束")
+            }
+        }
+    }
+
+    OutlinedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateItem()
+    ) {
+        Accordion(
+            headerContent = {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                ) {
+                    Text("整合邀请码", style = MedalTheme.typography.body1)
+                    Text(
+                        "请优先使用功能列表中的获取邀请码，确保账号库账号特征中含有 code 子项",
+                        style = MedalTheme.typography.label1
+                    )
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Button(
+                    Modifier.fillMaxWidth(),
+                    text = "执行",
+                    onClick = {
+                        state.value = true
+                    }
+                )
+            }
+        }
     }
 }
 

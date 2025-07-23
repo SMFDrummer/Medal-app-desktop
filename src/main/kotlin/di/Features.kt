@@ -210,4 +210,31 @@ val features = buildFeatures {
         description { "僵局逃脱" }
         strategy { 僵局逃脱() }
     }
+
+    feature {
+        title { "获取邀请码" }
+        description { "获取邀请码" }
+        strategy { 获取邀请码() }
+        analyze { context, user ->
+            context.responses["V303"]
+                ?.get("d")?.asArray?.getJsonObject(0)
+                ?.getString("data")?.parseObject()
+                ?.getString("code")?.apply {
+                    user.properties["code"] = this
+                }
+        }
+    }
+
+    feature {
+        title { "邀请抽奖" }
+        description { "当bai值为7是万能碎片×20，当bai为6是进阶书，当bai为5则是魔豆" }
+        inputs {
+            number("bai") { "奖励序号" }
+        }
+        strategy { values ->
+            邀请抽奖(
+                values["bai"]!!.toInt(),
+            )
+        }
+    }
 }

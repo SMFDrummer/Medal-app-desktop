@@ -3,6 +3,13 @@ package io.github.smfdrummer.medal_app_desktop.ui.utils.strategy
 import io.github.smfdrummer.utils.strategy.buildStrategy
 import io.github.smfdrummer.utils.strategy.extensions.V303
 
+fun 获取邀请码() = buildStrategy {
+    version = 1
+    description = "获取邀请码"
+
+    V303(10868)
+}
+
 fun 刷邀请码_安卓(code: String) = buildStrategy {
     version = 1
     description = "安卓 - 刷邀请码"
@@ -198,5 +205,80 @@ fun 刷邀请码_苹果(code: String) = buildStrategy {
 
         onFailure { false }
         onSuccess { true }
+    }
+}
+
+fun 邀请抽奖(bai: Int) = buildStrategy {
+    version = 1
+    description = "邀请抽奖"
+
+    V303(10868)
+
+    (1..4).forEach {
+        packet {
+            i = "V877"
+
+            parse(
+                """
+            {
+              "index": "$it",
+              "pi": "{{pi}}",
+              "sk": "{{sk}}",
+              "ui": "{{ui}}"
+            }
+        """.trimIndent()
+            )
+        }
+    }
+
+    (6..9).forEach {
+        packet {
+            i = "V877"
+
+            parse(
+                """
+            {
+              "index": "$it",
+              "pi": "{{pi}}",
+              "sk": "{{sk}}",
+              "ui": "{{ui}}"
+            }
+        """.trimIndent()
+            )
+        }
+    }
+
+    packet {
+        i = "V878"
+
+        parse(
+            """
+            {
+              "type": "0",
+              "pi": "{{pi}}",
+              "sk": "{{sk}}",
+              "ui": "{{ui}}"
+            }
+        """.trimIndent()
+        )
+
+        repeat = 21
+    }
+
+    packet {
+        i = "V878"
+
+        parse(
+            """
+            {
+              "bai": "$bai",
+              "gi": "0",
+              "pi": "{{pi}}",
+              "sk": "{{sk}}",
+              "type": "1",
+              "ui": "{{ui}}"
+            }
+        """.trimIndent()
+        )
     }
 }
