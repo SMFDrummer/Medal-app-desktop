@@ -237,4 +237,17 @@ val features = buildFeatures {
             )
         }
     }
+
+    feature {
+        title { "V231自定义领取" }
+        description { "oi领取物品ID" }
+        inputs {
+            number("oi") { "领取物品ID" }
+        }
+        strategy { values ->
+            临时领取(
+                values["oi"]!!.toInt(),
+            )
+        }
+    }
 }

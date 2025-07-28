@@ -10,7 +10,6 @@ import components.MedalTheme
 import components.components.*
 import data.AppSettings
 import data.SettingsDataStore
-import io.github.smfdrummer.network.CryptoDefaults
 import kotlinx.coroutines.launch
 import org.koin.compose.getKoin
 
@@ -71,9 +70,9 @@ fun SettingsScreen() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("算法版本（暂不支持切换）")
-                    Text(CryptoDefaults.cryptoType.toString())
+                    Text("2")
                     Switch(
-                        checked = CryptoDefaults.cryptoType == 2,
+                        checked = true,
                         enabled = false,
                         onCheckedChange = {
                             // TODO()

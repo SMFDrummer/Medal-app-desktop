@@ -4,11 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="0.5-hotfix">
+    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="0.5-test">
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/ExperimentScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/ExperimentScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/刷邀请码.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/刷邀请码.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/SettingsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/SettingsScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Requester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Requester.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/service/Login.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/service/Login.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/utils/strategy/StrategyConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/utils/strategy/StrategyConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/utils/strategy/StrategyDsl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/utils/strategy/StrategyDsl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/utils/strategy/StrategyManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/utils/strategy/StrategyManager.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -346,7 +356,10 @@
       <workItem from="1752506116019" duration="484000" />
       <workItem from="1752584520784" duration="468000" />
       <workItem from="1752588380650" duration="202000" />
-      <workItem from="1753275041876" duration="3992000" />
+      <workItem from="1753275041876" duration="4739000" />
+      <workItem from="1753354167636" duration="2356000" />
+      <workItem from="1753438891724" duration="89000" />
+      <workItem from="1753726830420" duration="510000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -596,7 +609,23 @@
       <option name="project" value="LOCAL" />
       <updated>1752506785106</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="1.0.0-build.13">
+      <option name="closed" value="true" />
+      <created>1753282636743</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1753282636743</updated>
+    </task>
+    <task id="LOCAL-00033" summary="0.5-test">
+      <option name="closed" value="true" />
+      <created>1753355144322</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1753355144322</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TerminalProjectNonSharedOptionsProvider">
@@ -629,7 +658,9 @@
     <MESSAGE value="0.5" />
     <MESSAGE value="1.0.0-build.11" />
     <MESSAGE value="0.5-hotfix" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.5-hotfix" />
+    <MESSAGE value="1.0.0-build.13" />
+    <MESSAGE value="0.5-test" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.5-test" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
