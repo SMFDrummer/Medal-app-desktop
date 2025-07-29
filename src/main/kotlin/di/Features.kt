@@ -28,35 +28,40 @@ val features = buildFeatures {
         strategy { 获取云端存档() }
         analyze { context, user ->
             context.responses["V316"]?.get("d")?.asObject?.apply {
+                getJsonArray("pl")?.apply {
+                    find { it.asObject?.getString("i") == "200134" }?.asObject?.getString("s")
+                        ?.let { user.properties["200134"] = it } // 未知等级
+                }
+
                 getJsonArray("pcl")?.apply {
                     find { it.asObject?.getString("i") == "22000830" }?.asObject?.getString("q")
-                        ?.let { user.properties["22000830"] = it }
+                        ?.let { user.properties["22000830"] = it } // 电鳗香蕉碎片
                     find { it.asObject?.getString("i") == "22000790" }?.asObject?.getString("q")
-                        ?.let { user.properties["22000790"] = it }
+                        ?.let { user.properties["22000790"] = it } // 贪吃龙草碎片
                     find { it.asObject?.getString("i") == "22001280" }?.asObject?.getString("q")
-                        ?.let { user.properties["22001280"] = it }
+                        ?.let { user.properties["22001280"] = it } // 守卫菇碎片
                 }
 
                 getJsonArray("il")?.apply {
                     find { it.asObject?.getString("i") == "23046" }?.asObject?.getString("q")
-                        ?.let { user.properties["23046"] = it }
+                        ?.let { user.properties["23046"] = it } // 进阶书
                     find { it.asObject?.getString("i") == "23225" }?.asObject?.getString("q")
-                        ?.let { user.properties["23225"] = it }
+                        ?.let { user.properties["23225"] = it } // 万能碎片
                     find { it.asObject?.getString("i") == "23093" }?.asObject?.getString("q")
-                        ?.let { user.properties["23093"] = it }
+                        ?.let { user.properties["23093"] = it } // 追击币
                     find { it.asObject?.getString("i") == "23124" }?.asObject?.getString("q")
-                        ?.let { user.properties["23124"] = it }
+                        ?.let { user.properties["23124"] = it } // 高级神器祝福券
                     find { it.asObject?.getString("i") == "23098" }?.asObject?.getString("q")
-                        ?.let { user.properties["23098"] = it }
+                        ?.let { user.properties["23098"] = it } // TODO
                 }
 
                 getJsonArray("gene")?.apply {
                     find { it.asObject?.getInt("gi") == 73069 }?.asObject?.getInt("l")
-                        ?.let { user.properties["73069"] = "$it" }
+                        ?.let { user.properties["73069"] = "$it" } // 萝卜瓷砖基因
                 }
 
                 getJsonObject("p")?.apply {
-                    getString("fg")?.let { user.properties["3008"] = it }
+                    getString("fg")?.let { user.properties["3008"] = it } // 钻石
                 }
             }
         }
