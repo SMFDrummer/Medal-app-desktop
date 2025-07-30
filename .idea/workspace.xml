@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="0.6">
+    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-build.16">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -343,7 +342,8 @@
       <workItem from="1753438891724" duration="89000" />
       <workItem from="1753726830420" duration="933000" />
       <workItem from="1753786043502" duration="15000" />
-      <workItem from="1753808919635" duration="303000" />
+      <workItem from="1753808919635" duration="453000" />
+      <workItem from="1753878468230" duration="47000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -633,7 +633,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753809075023</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="1.0.0-build.16">
+      <option name="closed" value="true" />
+      <created>1753809344876</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1753809344876</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TerminalProjectNonSharedOptionsProvider">
@@ -670,7 +678,8 @@
     <MESSAGE value="0.5-test" />
     <MESSAGE value="1.0.0-build.15" />
     <MESSAGE value="0.6" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.6" />
+    <MESSAGE value="1.0.0-build.16" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.0-build.16" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

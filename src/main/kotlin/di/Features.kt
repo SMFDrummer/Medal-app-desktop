@@ -30,7 +30,9 @@ val features = buildFeatures {
             context.responses["V316"]?.get("d")?.asObject?.apply {
                 getJsonArray("pl")?.apply {
                     find { it.asObject?.getString("i") == "200134" }?.asObject?.getString("s")
-                        ?.let { user.properties["200134"] = it } // 未知等级
+                        ?.let { user.properties["200134"] = it } // 超级机枪
+                    find { it.asObject?.getString("i") == "200140" }?.asObject?.getString("s")
+                        ?.let { user.properties["200140"] = it } // 海豌豆
                 }
 
                 getJsonArray("pcl")?.apply {
