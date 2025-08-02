@@ -1,3 +1,5 @@
+System.setProperty("https.protocols", "TLSv1.2")
+
 pluginManagement {
     repositories {
         mavenLocal()
@@ -13,8 +15,9 @@ pluginManagement {
         id("org.jetbrains.kotlin.plugin.compose").version(extra["kotlin.version"] as String)
         id("org.jetbrains.compose.hot-reload").version(extra["compose.hot-reload"] as String)
         id("com.nomanr.plugin.lumo").version(extra["lumo.version"] as String)
-
-        id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
+        kotlin("plugin.serialization").version(extra["kotlin.version"] as String)
+        id("com.google.devtools.ksp").version(extra["google.ksp"] as String)
+        id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
     }
 }
 

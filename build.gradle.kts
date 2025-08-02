@@ -6,8 +6,8 @@ plugins {
     id("org.jetbrains.compose.hot-reload")
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.nomanr.plugin.lumo")
-    kotlin("plugin.serialization") version "2.1.21"
-    id("com.google.devtools.ksp") version "2.1.20-2.0.0"
+    kotlin("plugin.serialization")
+    id("com.google.devtools.ksp")
 }
 
 group = "io.github.smfdrummer"
@@ -32,10 +32,10 @@ dependencies {
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
     api("io.github.smfdrummer:medal-core:0.6")
-    api("com.nomanr:composables:1.1.0")
+    api("com.nomanr:composables:1.1.1")
     implementation("io.github.fornewid:material-motion-compose-core:2.0.1")
 
-    implementation(project.dependencies.platform("io.insert-koin:koin-bom:4.0.3"))
+    implementation(project.dependencies.platform("io.insert-koin:koin-bom:4.1.0"))
     implementation("io.insert-koin:koin-core")
     implementation("io.insert-koin:koin-compose")
     implementation("io.insert-koin:koin-compose-viewmodel")
@@ -43,13 +43,13 @@ dependencies {
     implementation("io.insert-koin:koin-ktor")
     implementation("io.insert-koin:koin-logger-slf4j")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
 
     implementation(platform("io.arrow-kt:arrow-stack:2.1.2"))
     implementation("io.arrow-kt:arrow-core")
     implementation("io.arrow-kt:arrow-fx-coroutines")
-    implementation("io.arrow-kt:arrow-optics:2.1.0")
+    implementation("io.arrow-kt:arrow-optics")
     ksp("io.arrow-kt:arrow-optics-ksp-plugin:2.1.0")
 
     // implementation("com.squareup.okio:okio:3.10.2")
