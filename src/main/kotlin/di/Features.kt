@@ -257,4 +257,50 @@ val features = buildFeatures {
             )
         }
     }
+
+    feature {
+        title { "植物培育选择植物" }
+        description { "plantId植物ID" }
+        inputs {
+            number("plantId") { "植物ID" }
+        }
+        strategy { values ->
+            选择植物(
+                values["plantId"]!!.toInt(),
+            )
+        }
+    }
+
+    feature {
+        title { "植物培育做任务" }
+        description { "startId起始任务ID，endId终止任务ID" }
+        inputs {
+            number("startId") { "起始任务ID" }
+            number("endId") { "终止任务ID" }
+        }
+        strategy { values ->
+            培养植物(
+                values["startId"]!!.toInt(),
+                values["endId"]!!.toInt()
+            )
+        }
+    }
+
+    feature {
+        title { "植物培育领取植物" }
+        description { "领取植物" }
+        strategy { 领取植物() }
+    }
+
+    feature {
+        title { "僵博挑战" }
+        description { "挑战僵博" }
+        strategy { 僵博挑战() }
+    }
+
+    feature {
+        title { "僵博抽奖" }
+        description { "挑战僵博消耗蓝色水晶单抽" }
+        strategy { 僵博抽奖() }
+    }
 }
