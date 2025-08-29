@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="0.6-refix">
+    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-build.21">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/账号激活.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/utils/strategy/账号激活.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,6 +130,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Gradle.Medal-app-desktop [:Medal-core:build].executor": "Run",
+    "Gradle.Medal-app-desktop [:Medal-core:io.github.smfdrummer.network.CryptoKt.main()].executor": "Debug",
     "Gradle.Medal-app-desktop [:Medal-core:publishToMavenLocal].executor": "Run",
     "Gradle.Medal-app-desktop [:io.github.smfdrummer.medal_app_desktop.MainKt.main()].executor": "Debug",
     "Gradle.Medal-app-desktop [build].executor": "Run",
@@ -139,6 +141,7 @@
     "Gradle.Medal-app-desktop [run].executor": "Run",
     "Gradle.Preview: MainKt.App.executor": "Run",
     "Gradle.Preview: ui.MedalAppKt.MedalApp.executor": "Run",
+    "Gradle.Test.main.executor": "Debug",
     "Gradle.desktop.executor": "Debug",
     "Gradle.下载源代码.executor": "Run",
     "Gradle.构建 Medal-app-desktop.executor": "Run",
@@ -186,7 +189,7 @@
       <recent name="io.github.smfdrummer.medal_app_desktop.components.components.card" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Medal-app-desktop [run]">
+  <component name="RunManager" selected="Kotlin.MainKt">
     <configuration default="true" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" IS_LOCATION_SIMULATION_SUPPORTED="false" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" DEVELOPMENT_TEAM="${TEAM_ID}" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
       <embedded_app_extension_list />
       <method v="2">
@@ -220,28 +223,6 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Medal-app-desktop [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="clean" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration name="Medal-app-desktop [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -264,23 +245,20 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="🔥main [hotRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Test.main" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
-        <option name="env">
-          <map>
-            <entry key="DEVELOPER_DIR" value="/Applications/Xcode.app/Contents/Developer" />
-          </map>
-        </option>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="-DmainClass=io.github.smfdrummer.medal_app_desktop.MainKt --quiet" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="hotRun" />
+            <option value=":Medal-core:test" />
+            <option value="--tests" />
+            <option value="&quot;Test.main&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -288,8 +266,15 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
+    </configuration>
+    <configuration name="CryptoKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.smfdrummer.network.CryptoKt" />
+      <module name="Medal-core.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="io.github.smfdrummer.medal_app_desktop.MainKt" />
@@ -300,19 +285,19 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.MainKt" />
+        <item itemvalue="Gradle.Test.main" />
+        <item itemvalue="Kotlin.CryptoKt" />
         <item itemvalue="Gradle.Medal-app-desktop [run]" />
         <item itemvalue="Gradle.Medal-app-desktop [build]" />
-        <item itemvalue="Gradle.Medal-app-desktop [clean]" />
-        <item itemvalue="Kotlin.MainKt" />
-        <item itemvalue="Gradle.🔥main [hotRun]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-IU-252.25557.131" />
       </set>
     </attachedChunks>
   </component>
@@ -401,7 +386,9 @@
       <workItem from="1755530405462" duration="155000" />
       <workItem from="1755530605127" duration="732000" />
       <workItem from="1756395806984" duration="311000" />
-      <workItem from="1756396163703" duration="3432000" />
+      <workItem from="1756396163703" duration="3644000" />
+      <workItem from="1756489537232" duration="822000" />
+      <workItem from="1756490454991" duration="790000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -739,7 +726,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755531108525</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="1.0.0-build.21">
+      <option name="closed" value="true" />
+      <created>1756407943557</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1756407943557</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TerminalProjectNonSharedOptionsProvider">
@@ -782,21 +777,11 @@
     <MESSAGE value="gradle updated" />
     <MESSAGE value="1.0.0-build.18" />
     <MESSAGE value="0.6-refix" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.6-refix" />
+    <MESSAGE value="1.0.0-build.21" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.0-build.21" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/../Medal-core/src/main/kotlin/network/Crypto.kt</url>
-          <line>215</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

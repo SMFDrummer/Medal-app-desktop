@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel : ViewModel() {
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            Channel.entries.forEach { channel -> channel.version = "3.8.0" }
+            Channel.entries.forEach { channel -> channel.version = "3.8.1" }
         }
     }
 }
