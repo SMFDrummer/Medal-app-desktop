@@ -7,6 +7,8 @@ fun 选择植物(plantId: Int) = buildStrategy {
     version = 1
     description = "植物培育选择植物"
 
+    V303(10871)
+
     packet {
         i = "V987"
         parse(
@@ -38,6 +40,8 @@ fun 培养植物(startId: Int, endId: Int) = buildStrategy {
 fun 领取植物() = buildStrategy {
     version = 1
     description = "植物培育领取植物"
+
+    V303(10871)
 
     packet {
         i = "V989"
