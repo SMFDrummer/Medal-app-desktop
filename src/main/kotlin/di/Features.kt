@@ -303,4 +303,10 @@ val features = buildFeatures {
         description { "挑战僵博消耗蓝色水晶单抽" }
         strategy { 僵博抽奖() }
     }
+
+    feature {
+        title { "秘境领取" }
+        description { "秘境直接领取" }
+        strategy { 秘境领取() }
+    }
 }
