@@ -14,7 +14,8 @@ data class AppSettings(
     val darkMode: String = "auto",
     val channel: Int = 208,
     val accounts: List<String> = emptyList(),
-    val cryptoType: Int = 1
+    val cryptoType: Int = 2,
+    val version: String = "0.0.0"
 )
 
 class SettingsDataStore {
@@ -64,12 +65,19 @@ class SettingsDataStore {
                 } else {
                     1
                 }
+
+                val validVersion = if (Regex("""^\d+\.\d+\.\d+$""").matches(loadedSettings.version)) {
+                    loadedSettings.version
+                } else {
+                    "0.0.0"
+                }
                 
                 loadedSettings.copy(
                     darkMode = validDarkMode,
                     channel = validChannel,
                     accounts = validAccounts,
-                    cryptoType = validCryptoType
+                    cryptoType = validCryptoType,
+                    version = validVersion
                 )
             } else {
                 AppSettings()
@@ -127,8 +135,17 @@ class SettingsDataStore {
         val validCryptoType = if (cryptoType in listOf(1, 2)) {
             cryptoType
         } else {
-            1
+            2
         }
         updateSettings { it.copy(cryptoType = validCryptoType) }
+    }
+
+    suspend fun setVersion(version: String) {
+        val validVersion = if (Regex("""^\d+\.\d+\.\d+$""").matches(version)) {
+            version
+        } else {
+            "0.0.0"
+        }
+        updateSettings { it.copy(version = validVersion) }
     }
 } 

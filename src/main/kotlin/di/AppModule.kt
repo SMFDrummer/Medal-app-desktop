@@ -9,9 +9,9 @@ import org.koin.dsl.module
 import ui.viewmodel.HomeViewModel
 
 val appModule = module {
-    viewModel { HomeViewModel() }
+    single { SettingsDataStore() }
+    viewModel { HomeViewModel(get()) }
     viewModel { StrategyViewModel() }
     viewModel { ArchiveViewModel() }
     viewModel { ExperimentViewModel() }
-    single { SettingsDataStore() }
 } 

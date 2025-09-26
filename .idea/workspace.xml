@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-build.23">
+    <list default="true" id="7a72aebc-70fa-4b89-91d3-ba8ba6143b83" name="更改" comment="1.0.0-build.24">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/di/Features.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/data/AppSettings.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/data/AppSettings.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/di/AppModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/di/AppModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/pages/SettingsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/pages/SettingsScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/viewmodel/HomeViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,6 +120,7 @@
   <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="$USER_HOME$/.gradle/wrapper/dists/gradle-9.0.0-bin/d6wjpkvcgsg3oed0qlfss3wgl/gradle-9.0.0" javaHome="/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home" gradleVersion="9.0.0">
     <option name="jvmArguments">
       <list>
+        <option value="-Dandroid.home=/Users/smfdrummer/Library/Android/sdk" />
         <option value="-Dhttp.proxyHost=127.0.0.1" />
         <option value="-Dhttp.proxyPort=7890" />
         <option value="-Dhttps.proxyHost=127.0.0.1" />
@@ -201,12 +204,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Kotlin.MainKt">
-    <configuration default="true" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" IS_LOCATION_SIMULATION_SUPPORTED="false" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" DEVELOPMENT_TEAM="${TEAM_ID}" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
-      <embedded_app_extension_list />
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Medal-app-desktop [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="env">
@@ -402,7 +399,10 @@
       <workItem from="1756490454991" duration="1105000" />
       <workItem from="1756548029909" duration="37000" />
       <workItem from="1756548247075" duration="43000" />
-      <workItem from="1756571904633" duration="732000" />
+      <workItem from="1756571904633" duration="837000" />
+      <workItem from="1756646688824" duration="26000" />
+      <workItem from="1756646739222" duration="24000" />
+      <workItem from="1758887782664" duration="1915000" />
     </task>
     <task id="LOCAL-00001" summary="1.0.0-SNAPSHOT">
       <option name="closed" value="true" />
@@ -772,7 +772,15 @@
       <option name="project" value="LOCAL" />
       <updated>1756548266566</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="1.0.0-build.24">
+      <option name="closed" value="true" />
+      <created>1756572794409</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1756572794409</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TerminalProjectNonSharedOptionsProvider">
@@ -793,7 +801,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="1.0.0-build.3" />
     <MESSAGE value="1.0.0-build.4" />
     <MESSAGE value="1.0.0-build.5" />
     <MESSAGE value="1.0.0-build.7" />
@@ -818,7 +825,8 @@
     <MESSAGE value="0.6-hotfix" />
     <MESSAGE value="1.0.0-build.22" />
     <MESSAGE value="1.0.0-build.23" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.0.0-build.23" />
+    <MESSAGE value="1.0.0-build.24" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.0-build.24" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

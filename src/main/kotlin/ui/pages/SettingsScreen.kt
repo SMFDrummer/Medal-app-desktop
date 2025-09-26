@@ -2,12 +2,18 @@ package ui.pages
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import components.LocalTextStyle
 import components.MedalTheme
 import components.components.*
+import components.components.textfield.UnderlinedTextField
 import data.AppSettings
 import data.SettingsDataStore
 import kotlinx.coroutines.launch
@@ -78,6 +84,49 @@ fun SettingsScreen() {
                             // TODO()
                         }
                     )
+                }
+            }
+        }
+
+        var currentVersion by remember { mutableStateOf(settings.version) }
+        LaunchedEffect(settings.version) {
+            currentVersion = settings.version
+        }
+
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = MedalTheme.colors.surface
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("游戏版本号")
+                    UnderlinedTextField(
+                        value = currentVersion,
+                        onValueChange = { currentVersion = it },
+                        isError = !Regex("""^\d+\.\d+\.\d+$""").matches(currentVersion),
+                        placeholder = { Text("x.x.x") },
+                        singleLine = true,
+                        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+                        modifier = Modifier.width(256.dp)
+                    )
+                    IconButton(
+                        enabled = Regex("""^\d+\.\d+\.\d+$""").matches(currentVersion),
+                        variant = IconButtonVariant.PrimaryGhost,
+                        onClick = {
+                            scope.launch {
+                                settingsDataStore.setVersion(currentVersion)
+                            }
+                        }
+                    ) {
+                        Icon(Icons.Outlined.Check, "check", tint = MedalTheme.colors.primary)
+                    }
                 }
             }
         }
