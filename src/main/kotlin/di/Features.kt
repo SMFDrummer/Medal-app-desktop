@@ -42,6 +42,8 @@ val features = buildFeatures {
                         ?.let { user.properties["22000790"] = it } // 贪吃龙草碎片
                     find { it.asObject?.getString("i") == "22001280" }?.asObject?.getString("q")
                         ?.let { user.properties["22001280"] = it } // 守卫菇碎片
+                    find { it.asObject?.getString("i") == "22001340" }?.asObject?.getString("q")
+                        ?.let { user.properties["22001340"] = it } // 超级机枪射手碎片
                 }
 
                 getJsonArray("il")?.apply {
@@ -308,5 +310,23 @@ val features = buildFeatures {
         title { "秘境领取" }
         description { "秘境直接领取" }
         strategy { 秘境领取() }
+    }
+
+    feature {
+        title { "领取红包" }
+        description { "红包幸运奖" }
+        strategy { 领取红包() }
+    }
+
+    feature {
+        title { "特殊秘境" }
+        description { "特殊秘境通关" }
+        strategy { 特殊秘境() }
+    }
+
+    feature {
+        title { "庭院广告" }
+        description { "每日庭院广告" }
+        strategy { 庭院广告() }
     }
 }
