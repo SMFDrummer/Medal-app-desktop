@@ -335,4 +335,10 @@ val features = buildFeatures {
         description { "京东卡礼品抽奖" }
         strategy { 礼品抽奖() }
     }
+
+    feature {
+        title { "新功能V1158" }
+        description { "新功能V1158" }
+        strategy { 新功能V1158() }
+    }
 }
