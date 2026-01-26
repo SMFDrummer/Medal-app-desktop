@@ -26,25 +26,23 @@ import components.foundation.rememberToggleState
 import data.AppSettings
 import data.SettingsDataStore
 import io.github.smfdrummer.enums.Channel
-import io.github.smfdrummer.medal_app_desktop.ui.utils.User
-import io.github.smfdrummer.medal_app_desktop.ui.utils.Users
-import io.github.smfdrummer.medal_app_desktop.ui.utils.getErrorString
-import io.github.smfdrummer.medal_app_desktop.ui.utils.runWith
+import io.github.smfdrummer.medal_app_desktop.ui.utils.*
 import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.刷邀请码_安卓
 import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.刷邀请码_苹果
 import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.CardStatus
 import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.ExperimentViewModel
 import io.github.smfdrummer.network.getMD5
+import io.github.smfdrummer.network.provider.IOSProvider
 import io.github.smfdrummer.network.service.login
 import io.github.smfdrummer.utils.json.*
-import io.github.smfdrummer.utils.strategy.ContextCallback
-import io.github.smfdrummer.utils.strategy.StrategyException
+import io.github.smfdrummer.utils.strategy.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import network.service.modifyPassword
 import org.koin.compose.getKoin
@@ -76,9 +74,10 @@ fun ExperimentScreen() {
 
     Row {
         Column(
-            modifier = Modifier.fillMaxSize().padding(32.dp).weight(3f),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 32.dp).weight(3f),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            Spacer(Modifier.height(16.dp))
             Text(
                 text = "实验性功能",
                 style = MedalTheme.typography.h1,
@@ -149,6 +148,8 @@ private fun FunctionList() {
         item { ChangePasswordCard() }
         item { ChangePasswordBatchCard() }
         item { FetchInviteCodeBatchCard() }
+
+        item { Spacer(Modifier) }
     }
 }
 
@@ -544,25 +545,44 @@ private fun LazyItemScope.InviteCard() {
                     enabled = settings.channel == -1,
                     variant = ButtonVariant.PrimaryOutlined,
                     onClick = {
+                        val fileMutex = Mutex()
+                        val file = File("随机_IOS_${System.currentTimeMillis()}.json")
                         scope.launch(Dispatchers.IO) {
+                            val emptyStrategy = buildStrategy { }
                             val users = mutableListOf<User>()
-                            repeat(100) {
-                                val user =
-                                    User(userId = primitive { "11111111-1234-1234-1234-${(111111111111..999999999999).random()}" })
-                                users.add(user)
-                            }
+                            repeat(3000) { count ->
+                                val context = StrategyContext()
+                                val udid = "11111111-1234-1234-1234-${(111111111111..999999999999).random()}"
+                                emptyStrategy.executeWith(
+                                    userProvider = IOSProvider(udid),
+                                    isRandom = true,
+                                    context = context
+                                ).fold({}, {
+                                    users.add(
+                                        User(
+                                            userId = primitive { udid },
+                                            credential = User.Credential(
+                                                pi = context.variables["pi"]!!.jsonPrimitive.content,
+                                                sk = context.variables["sk"]!!.jsonPrimitive.content,
+                                                ui = context.variables["ui"]!!.jsonPrimitive.content
+                                            )
+                                        )
+                                    )
 
-                            File("随机_IOS_${System.currentTimeMillis()}.json").apply {
-                                writeText(
-                                    jsonWith(
-                                        JsonFeature.PrettyPrint,
-                                        JsonFeature.ImplicitNulls,
-                                        JsonFeature.IgnoreUnknownKeys
-                                    ).encodeToString(Users(users))
-                                )
-                                settingsDataStore.addAccounts(listOf(this.absolutePath))
-                                logger.i("已生成随机账号库：${this.name}")
+                                    fileMutex.withLock {
+                                        file.atomicWriteText(
+                                            jsonWith(
+                                                JsonFeature.PrettyPrint,
+                                                JsonFeature.ImplicitNulls,
+                                                JsonFeature.IgnoreUnknownKeys
+                                            ).encodeToString(Users(users))
+                                        )
+                                    }
+                                    logger.i("已生成: ${count + 1}")
+                                })
                             }
+                            settingsDataStore.addAccounts(listOf(file.absolutePath))
+                            logger.i("已生成随机账号库：${file.name}")
                         }
                     }
                 )

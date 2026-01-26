@@ -7,6 +7,7 @@ import io.github.smfdrummer.network.provider.OfficialProvider
 import io.github.smfdrummer.utils.json.JsonFeature
 import io.github.smfdrummer.utils.json.fromJson
 import io.github.smfdrummer.utils.json.jsonWith
+import io.github.smfdrummer.utils.json.primitive
 import io.github.smfdrummer.utils.strategy.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -14,9 +15,8 @@ import kotlinx.serialization.Required
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonPrimitive
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
 
 @Serializable
 data class Users(@SerialName("Users") val users: List<User>)
@@ -30,9 +30,16 @@ data class User(
     val token: String? = null,
     var activate: Boolean = true,
     var banned: Boolean = false,
+    var credential: Credential? = null,
     val properties: MutableMap<String, String> = mutableMapOf()
-)
-
+) {
+    @Serializable
+    data class Credential(
+        val pi: String,
+        val sk: String,
+        val ui: String
+    )
+}
 private val fileMutex = Mutex()
 
 suspend fun StrategyConfig.runWith(
@@ -76,6 +83,15 @@ suspend fun StrategyConfig.runWith(
         if (additionalCutoff?.invoke(successCounter.get()) == true) { break }
         onUserChanged(user)
         val context = StrategyContext(contextCallback)
+            // region Added 2026/01/24 needs to be deleted.
+            .apply {
+                if (user.credential != null) with(user.credential!!) {
+                    variables["pi"] = primitive { pi }
+                    variables["sk"] = primitive { sk }
+                    variables["ui"] = primitive { ui }
+                }
+            }
+        // endregion
         runCatching {
             executeWith(
                 userProvider = when (channel) {
@@ -126,7 +142,19 @@ suspend fun StrategyConfig.runWith(
         }
 
         onContextAnalyze?.invoke(context, user)
-        
+
+        // region Added 2026/01/24 needs to be deleted.
+        with(context.variables) {
+            if (containsKey("pi") && containsKey("sk") && containsKey("ui")) {
+                user.credential = User.Credential(
+                    pi = get("pi")!!.jsonPrimitive.content,
+                    sk = get("sk")!!.jsonPrimitive.content,
+                    ui = get("ui")!!.jsonPrimitive.content
+                )
+            }
+        }
+        // endregion
+
         fileMutex.withLock {
             file.atomicWriteText(
                 jsonWith(
@@ -156,9 +184,3 @@ fun StrategyException.getErrorString() = when(this) {
 }
 
 class InvalidInviteCodeException(message: String) : Exception(message) // Temp
-
-private fun File.atomicWriteText(content: String) {
-    val tmp = toPath().resolveSibling("$nameWithoutExtension.tmp")
-    Files.writeString(tmp, content)
-    Files.move(tmp, toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
-}
