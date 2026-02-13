@@ -6,9 +6,15 @@ import io.github.smfdrummer.utils.json.*
 
 val features = buildFeatures {
     feature {
-        title { "账号初始化激活" }
+        title { "账号初始化激活 - 安卓" }
         description { "*更新V206去除双倍速 V206 + V316 + V900" }
-        strategy { 账号激活() }
+        strategy { 账号激活_安卓() }
+    }
+
+    feature {
+        title { "账号初始化激活 - IOS" }
+        description { "V205 + V216 + V900" }
+        strategy { 账号激活_苹果() }
     }
 
     feature {
@@ -337,8 +343,26 @@ val features = buildFeatures {
     }
 
     feature {
-        title { "新功能V1158" }
-        description { "新功能V1158" }
-        strategy { 新功能V1158() }
+        title { "新功能10622" }
+        description { "新功能10622" }
+        strategy { 新功能10622() }
+    }
+
+    feature {
+        title { "新功能10894" }
+        description { "新功能10894" }
+        strategy { 新功能10894() }
+    }
+
+    feature {
+        title { "元宝签到" }
+        description { "元宝签到" }
+        strategy { 元宝签到() }
+    }
+
+    feature {
+        title { "传奇宝箱" }
+        description { "传奇宝箱每日" }
+        strategy { 传奇宝箱() }
     }
 }

@@ -3,26 +3,24 @@ package io.github.smfdrummer.medal_app_desktop.ui.utils.strategy
 import io.github.smfdrummer.utils.strategy.buildStrategy
 import io.github.smfdrummer.utils.strategy.extensions.V303
 
-fun 新功能V1158() = buildStrategy {
+fun 元宝签到() = buildStrategy {
     version = 1
-    description = "新功能V1158"
+    description = "元宝签到活动"
 
-    V303(10622)
+    V303(10882)
 
-    (1001..1006).forEach {
-        packet {
-            i = "V1158"
+    packet {
+        i = "V405"
 
-            parse(
-                """
+        parse(
+            """
             {
+              "a": "10882",
               "pi": "{{pi}}",
               "sk": "{{sk}}",
-              "tk": "$it",
               "ui": "{{ui}}"
             }
         """.trimIndent()
-            )
-        }
+        )
     }
 }

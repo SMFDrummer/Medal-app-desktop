@@ -550,7 +550,7 @@ private fun LazyItemScope.InviteCard() {
                         scope.launch(Dispatchers.IO) {
                             val emptyStrategy = buildStrategy { }
                             val users = mutableListOf<User>()
-                            repeat(3000) { count ->
+                            repeat(20000) { count ->
                                 val context = StrategyContext()
                                 val udid = "11111111-1234-1234-1234-${(111111111111..999999999999).random()}"
                                 emptyStrategy.executeWith(
