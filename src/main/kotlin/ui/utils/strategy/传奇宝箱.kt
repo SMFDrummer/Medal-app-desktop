@@ -7,7 +7,7 @@ fun 传奇宝箱() = buildStrategy {
     version = 1
     description = "传奇宝箱每日"
 
-    V303(10623)
+    V303(10614)
 
     packet {
         i = "V333"
