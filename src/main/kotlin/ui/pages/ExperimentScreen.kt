@@ -146,6 +146,7 @@ private fun FunctionList() {
     ) {
         item { InviteCard() }
         item { ChangePasswordCard() }
+        item { ChangePasswordCardByToken() }
         item { ChangePasswordBatchCard() }
         item { FetchInviteCodeBatchCard() }
 
@@ -306,6 +307,106 @@ private fun LazyItemScope.ChangePasswordCard() {
                             }.onSuccess {
                                 logger.i(
                                     "密码修改成功：账号：$phoneOrUserId 密码：${
+                                        when (isRandom) {
+                                            true -> randomPassword
+                                            false -> newPassWord
+                                        }
+                                    }"
+                                )
+                            }
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LazyItemScope.ChangePasswordCardByToken() {
+    var userId by remember { mutableStateOf("") }
+    var token by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var newPassWord by remember { mutableStateOf("") }
+    var isRandom by remember { mutableStateOf(false) }
+
+    val logger = koinViewModel<ExperimentViewModel>()
+    val scope = rememberCoroutineScope()
+
+    OutlinedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateItem()
+    ) {
+        Accordion(
+            headerContent = {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                ) {
+                    Text("修改密码", style = MedalTheme.typography.body1)
+                    Text("Token（不登录）", style = MedalTheme.typography.label1)
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = userId,
+                    onValueChange = { userId = it },
+                    placeholder = { Text("userId") },
+                )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = token,
+                    onValueChange = { token = it },
+                    placeholder = { Text("token") },
+                )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = password,
+                    onValueChange = { password = it },
+                    placeholder = { Text("密码") },
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier.weight(1f),
+                        value = newPassWord,
+                        enabled = !isRandom,
+                        onValueChange = { newPassWord = it },
+                        placeholder = { Text("新密码") },
+                    )
+                    Switch(
+                        checked = isRandom,
+                        onCheckedChange = { isRandom = it },
+                    )
+                    Text("随机", style = MedalTheme.typography.body1)
+                }
+                Button(
+                    Modifier.fillMaxWidth(),
+                    text = "修改",
+                    enabled = userId.isNotEmpty() && password.isNotEmpty() && (newPassWord.isNotEmpty() || isRandom),
+                    onClick = {
+                        scope.launch(Dispatchers.IO) {
+                            val randomPassword = UUID.randomUUID().toString().split("-")[4]
+                            runCatching {
+                                logger.i("登录账号：$userId")
+                                modifyPassword(
+                                    token, userId, password, when (isRandom) {
+                                        true -> randomPassword
+                                        false -> newPassWord
+                                    }
+                                )
+                            }.onFailure {
+                                logger.i("密码修改失败：${it.message ?: it.toString()}")
+                            }.onSuccess {
+                                logger.i(
+                                    "密码修改成功：账号：$userId 密码：${
                                         when (isRandom) {
                                             true -> randomPassword
                                             false -> newPassWord
