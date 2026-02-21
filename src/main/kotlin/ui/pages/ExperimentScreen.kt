@@ -144,13 +144,91 @@ private fun FunctionList() {
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        item { ToggleActivateCard() }
+        item { FetchInviteCodeBatchCard() }
         item { InviteCard() }
         item { ChangePasswordCard() }
         item { ChangePasswordCardByToken() }
         item { ChangePasswordBatchCard() }
-        item { FetchInviteCodeBatchCard() }
 
         item { Spacer(Modifier) }
+    }
+}
+
+@Composable
+private fun LazyItemScope.ToggleActivateCard() {
+    val logger = koinViewModel<ExperimentViewModel>()
+    val scope = rememberCoroutineScope()
+    val state = rememberToggleState()
+    val fileMutex = Mutex()
+
+    AccountDialog(
+        state = state,
+        functionName = "快捷转换激活"
+    ) { userPath ->
+        scope.launch(Dispatchers.IO) {
+            runCatching {
+                val file = File(userPath)
+                val data = file.readText().fromJson<Users>(
+                    JsonFeature.ImplicitNulls,
+                    JsonFeature.IgnoreUnknownKeys,
+                    JsonFeature.AllowTrailingComma
+                )
+
+                data.users.forEach { user ->
+                    if (!user.activate && !user.banned) {
+                        user.activate = true
+                    }
+                }
+
+                fileMutex.withLock {
+                    file.atomicWriteText(
+                        jsonWith(
+                            JsonFeature.PrettyPrint,
+                            JsonFeature.ImplicitNulls,
+                            JsonFeature.IgnoreUnknownKeys
+                        ).encodeToString(data)
+                    )
+                }
+            }.onFailure {
+                logger.i("转换Activate出错：${it.message ?: it.toString()}")
+            }.onSuccess {
+                logger.i("转换Activate结束")
+            }
+        }
+    }
+
+    OutlinedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateItem()
+    ) {
+        Accordion(
+            headerContent = {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                ) {
+                    Text("快捷转换激活", style = MedalTheme.typography.body1)
+                    Text(
+                        "快捷将账号库中未封禁且运行完成的账号重新激活（activate -> true）",
+                        style = MedalTheme.typography.label1
+                    )
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Button(
+                    Modifier.fillMaxWidth(),
+                    text = "执行",
+                    onClick = {
+                        state.value = true
+                    }
+                )
+            }
+        }
     }
 }
 
@@ -176,7 +254,7 @@ private fun LazyItemScope.FetchInviteCodeBatchCard() {
                 logger.i("开始整合")
 
                 buildString {
-                    for (user in data.users.filter { it.activate && !it.banned && !it.password.isNullOrEmpty() }) {
+                    for (user in data.users.filter { it.activate && !it.banned }) {
                         user.properties["code"]?.let {
                             append(it)
                             append("\n")
