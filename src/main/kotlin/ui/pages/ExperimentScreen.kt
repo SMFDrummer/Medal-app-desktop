@@ -51,7 +51,7 @@ import ui.pages.StrategyCallbackCard
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 import java.io.File
-import java.util.*
+import java.security.SecureRandom
 import kotlin.io.path.Path
 
 @Composable
@@ -136,7 +136,30 @@ fun ExperimentScreen() {
     }
 }
 
+private fun generatePassword(length: Int = 12): String {
+    require(length >= 3) { "Password length must be at least 3" }
 
+    val upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    val lower = "abcdefghijklmnopqrstuvwxyz"
+    val digits = "0123456789"
+    val all = upper + lower + digits
+
+    val random = SecureRandom()
+
+    val password = mutableListOf<Char>()
+
+    password += upper[random.nextInt(upper.length)]
+    password += lower[random.nextInt(lower.length)]
+    password += digits[random.nextInt(digits.length)]
+
+    repeat(length - 3) {
+        password += all[random.nextInt(all.length)]
+    }
+
+    password.shuffle(random)
+
+    return password.joinToString("")
+}
 
 @Composable
 private fun FunctionList() {
@@ -370,7 +393,7 @@ private fun LazyItemScope.ChangePasswordCard() {
                     enabled = phoneOrUserId.isNotEmpty() && password.isNotEmpty() && (newPassWord.isNotEmpty() || isRandom),
                     onClick = {
                         scope.launch(Dispatchers.IO) {
-                            val randomPassword = UUID.randomUUID().toString().split("-")[4]
+                            val randomPassword = generatePassword()
                             runCatching {
                                 logger.i("登录账号：$phoneOrUserId")
                                 val (userId, token) = login(phoneOrUserId, password.getMD5())
@@ -471,7 +494,7 @@ private fun LazyItemScope.ChangePasswordCardByToken() {
                     enabled = userId.isNotEmpty() && password.isNotEmpty() && (newPassWord.isNotEmpty() || isRandom),
                     onClick = {
                         scope.launch(Dispatchers.IO) {
-                            val randomPassword = UUID.randomUUID().toString().split("-")[4]
+                            val randomPassword = generatePassword()
                             runCatching {
                                 logger.i("登录账号：$userId")
                                 modifyPassword(
@@ -525,7 +548,7 @@ private fun LazyItemScope.ChangePasswordBatchCard() {
                 )
 
                 for (user in data.users.filter { it.activate && !it.banned && !it.password.isNullOrEmpty() }) {
-                    val randomPassword = UUID.randomUUID().toString().split("-")[4]
+                    val randomPassword = generatePassword()
                     runCatching {
                         logger.i("登录账号：${user.userId.content}")
                         val (userId, token) = login(user.userId.content, user.password!!.getMD5())
@@ -544,7 +567,7 @@ private fun LazyItemScope.ChangePasswordBatchCard() {
                     }
 
                     fileMutex.withLock {
-                        file.writeText(
+                        file.atomicWriteText(
                             jsonWith(
                                 JsonFeature.PrettyPrint,
                                 JsonFeature.ImplicitNulls,
