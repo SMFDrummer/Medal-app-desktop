@@ -687,6 +687,7 @@ private fun LazyItemScope.InviteCard() {
                     userPath = path,
                     channel = settings.channel,
                     contextCallback = contextCallback,
+                    isRandom = true,
                     additionalCutoff = { it >= 12 },
                     onUserChanged = { logger.i("更换账号：${it.userId.content}") },
                     onStrategyException = { logger.i("发生错误：${it.getErrorString()}") },

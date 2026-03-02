@@ -63,6 +63,7 @@ suspend fun StrategyConfig.runWith(
     userPath: String,
     channel: Int,
     contextCallback: ContextCallback,
+    isRandom: Boolean = false,
     additionalCutoff: ((Int) -> Boolean)? = null,
     onUserChanged: (User) -> Unit,
     onStrategyException: (StrategyException) -> Unit,
@@ -100,7 +101,7 @@ suspend fun StrategyConfig.runWith(
                     else -> if (user.userId.content.isNotEmpty() && !user.password.isNullOrEmpty())
                         OfficialProvider(user.userId.content, user.password!!.getMD5()) else null
                 },
-                isRandom = true,
+                isRandom = isRandom,
                 context = context
             ).fold(
                 { error ->
