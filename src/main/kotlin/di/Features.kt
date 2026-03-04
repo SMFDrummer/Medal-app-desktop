@@ -3,6 +3,8 @@ package io.github.smfdrummer.medal_app_desktop.di
 import io.github.smfdrummer.medal_app_desktop.ui.utils.buildFeatures
 import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.*
 import io.github.smfdrummer.utils.json.*
+import ui.utils.dto.OnlineSave
+import ui.utils.dto.setProperties
 
 val features = buildFeatures {
     feature {
@@ -29,51 +31,38 @@ val features = buildFeatures {
     }
 
     feature {
-        title { "获取账号详细信息" }
-        description { "电鳗香蕉碎片，贪吃龙草碎片，守卫菇碎片，进阶书碎片\n万能碎片，钻石，追击币，萝卜瓷砖基因，高级神器祝福券" }
-        strategy { 获取云端存档() }
+        title { "获取账号详细信息 - 安卓" }
+        description { "V316" }
+        strategy { 获取云端存档_安卓() }
         analyze { context, user ->
-            context.responses["V316"]?.get("d")?.asObject?.apply {
-                getJsonArray("pl")?.apply {
-                    find { it.asObject?.getString("i") == "200134" }?.asObject?.getString("s")
-                        ?.let { user.properties["200134"] = it } // 超级机枪
-                    find { it.asObject?.getString("i") == "200140" }?.asObject?.getString("s")
-                        ?.let { user.properties["200140"] = it } // 海豌豆
-                }
+            // region 临时策略清理已有词条数据
+            if (user.properties.containsKey("3008")) user.properties.clear()
+            // endregion
 
-                getJsonArray("pcl")?.apply {
-                    find { it.asObject?.getString("i") == "22000830" }?.asObject?.getString("q")
-                        ?.let { user.properties["22000830"] = it } // 电鳗香蕉碎片
-                    find { it.asObject?.getString("i") == "22000790" }?.asObject?.getString("q")
-                        ?.let { user.properties["22000790"] = it } // 贪吃龙草碎片
-                    find { it.asObject?.getString("i") == "22001280" }?.asObject?.getString("q")
-                        ?.let { user.properties["22001280"] = it } // 守卫菇碎片
-                    find { it.asObject?.getString("i") == "22001340" }?.asObject?.getString("q")
-                        ?.let { user.properties["22001340"] = it } // 超级机枪射手碎片
-                }
+            context.responses["V316"]?.get("d")?.asObject?.fromJsonOrNull<OnlineSave>(
+                JsonFeature.IgnoreUnknownKeys,
+                JsonFeature.IsLenient
+            )?.setProperties(user)
 
-                getJsonArray("il")?.apply {
-                    find { it.asObject?.getString("i") == "23046" }?.asObject?.getString("q")
-                        ?.let { user.properties["23046"] = it } // 进阶书
-                    find { it.asObject?.getString("i") == "23225" }?.asObject?.getString("q")
-                        ?.let { user.properties["23225"] = it } // 万能碎片
-                    find { it.asObject?.getString("i") == "23093" }?.asObject?.getString("q")
-                        ?.let { user.properties["23093"] = it } // 追击币
-                    find { it.asObject?.getString("i") == "23124" }?.asObject?.getString("q")
-                        ?.let { user.properties["23124"] = it } // 高级神器祝福券
-                    find { it.asObject?.getString("i") == "23098" }?.asObject?.getString("q")
-                        ?.let { user.properties["23098"] = it } // TODO
-                }
+            user.properties.entries.removeIf { it.value == "null" }
+        }
+    }
 
-                getJsonArray("gene")?.apply {
-                    find { it.asObject?.getInt("gi") == 73069 }?.asObject?.getInt("l")
-                        ?.let { user.properties["73069"] = "$it" } // 萝卜瓷砖基因
-                }
+    feature {
+        title { "获取账号详细信息 - IOS" }
+        description { "V216" }
+        strategy { 获取云端存档_苹果() }
+        analyze { context, user ->
+            // region 临时策略清理已有词条数据
+            if (user.properties.containsKey("3008")) user.properties.clear()
+            // endregion
 
-                getJsonObject("p")?.apply {
-                    getString("fg")?.let { user.properties["3008"] = it } // 钻石
-                }
-            }
+            context.responses["V216"]?.get("d")?.asObject?.fromJsonOrNull<OnlineSave>(
+                JsonFeature.IgnoreUnknownKeys,
+                JsonFeature.IsLenient
+            )?.setProperties(user)
+
+            user.properties.entries.removeIf { it.value == "null" }
         }
     }
 

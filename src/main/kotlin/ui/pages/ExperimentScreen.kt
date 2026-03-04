@@ -42,7 +42,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import network.service.modifyPassword
 import org.koin.compose.getKoin
@@ -764,11 +763,6 @@ private fun LazyItemScope.InviteCard() {
                                     users.add(
                                         User(
                                             userId = primitive { udid },
-                                            credential = User.Credential(
-                                                pi = context.variables["pi"]!!.jsonPrimitive.content,
-                                                sk = context.variables["sk"]!!.jsonPrimitive.content,
-                                                ui = context.variables["ui"]!!.jsonPrimitive.content
-                                            )
                                         )
                                     )
 

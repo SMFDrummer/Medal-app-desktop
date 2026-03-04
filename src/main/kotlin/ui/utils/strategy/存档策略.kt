@@ -64,9 +64,9 @@ fun 覆盖自定义存档(
     }
 }
 
-fun 获取云端存档() = buildStrategy {
+fun 获取云端存档_安卓() = buildStrategy {
     version = 1
-    description = "获取云端存档"
+    description = "获取云端存档 - Android"
 
     packet {
         i = "V316"
@@ -76,6 +76,29 @@ fun 获取云端存档() = buildStrategy {
             {
               "b": "0",
               "n": "",
+              "pi": "{{pi}}",
+              "sk": "{{sk}}",
+              "ui": "{{ui}}"
+            }
+
+        """.trimIndent()
+        )
+
+        onSuccess { true }
+    }
+}
+
+fun 获取云端存档_苹果() = buildStrategy {
+    version = 1
+    description = "获取云端存档 - IOS"
+
+    packet {
+        i = "V216"
+
+        parse(
+            """
+            {
+              "b": "0",
               "pi": "{{pi}}",
               "sk": "{{sk}}",
               "ui": "{{ui}}"
