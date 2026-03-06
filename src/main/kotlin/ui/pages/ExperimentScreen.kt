@@ -167,6 +167,7 @@ private fun FunctionList() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item { ToggleActivateCard() }
+        item { GetTokenBatchCard() }
         item { FetchInviteCodeBatchCard() }
         item { InviteCard() }
         item { ChangePasswordCard() }
@@ -490,7 +491,7 @@ private fun LazyItemScope.ChangePasswordCardByToken() {
                 Button(
                     Modifier.fillMaxWidth(),
                     text = "修改",
-                    enabled = userId.isNotEmpty() && password.isNotEmpty() && (newPassWord.isNotEmpty() || isRandom),
+                    enabled = userId.isNotEmpty() && (newPassWord.isNotEmpty() || isRandom),
                     onClick = {
                         scope.launch(Dispatchers.IO) {
                             val randomPassword = generatePassword()
@@ -623,6 +624,88 @@ private fun LazyItemScope.ChangePasswordBatchCard() {
                     Modifier.fillMaxWidth(),
                     text = "执行",
                     enabled = newPassWord.isNotEmpty() || isRandom,
+                    onClick = {
+                        state.value = true
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LazyItemScope.GetTokenBatchCard() {
+    val logger = koinViewModel<ExperimentViewModel>()
+    val scope = rememberCoroutineScope()
+    val state = rememberToggleState()
+
+    AccountDialog(
+        state = state,
+        functionName = "修改密码（批量）"
+    ) { userPath ->
+        scope.launch(Dispatchers.IO) {
+            val fileMutex = Mutex()
+
+            runCatching {
+                val file = File(userPath)
+                val data = file.readText().fromJson<Users>(
+                    JsonFeature.ImplicitNulls,
+                    JsonFeature.IgnoreUnknownKeys,
+                    JsonFeature.AllowTrailingComma
+                )
+
+                for (user in data.users.filter { it.activate && !it.banned && !it.password.isNullOrEmpty() }) {
+                    runCatching {
+                        logger.i("登录账号：${user.userId.content}")
+                        val (userId, token) = login(user.userId.content, user.password!!.getMD5())
+                        user.token = token
+                    }.onFailure {
+                        logger.i("账号：${user.userId.content} 获取token失败：${it.message ?: it.toString()}")
+                    }.onSuccess {
+                        logger.i("账号：${user.userId.content} 获取token成功：${user.token}")
+                        user.activate = false
+                    }
+
+                    fileMutex.withLock {
+                        file.atomicWriteText(
+                            jsonWith(
+                                JsonFeature.PrettyPrint,
+                                JsonFeature.ImplicitNulls,
+                                JsonFeature.IgnoreUnknownKeys
+                            ).encodeToString(data)
+                        )
+                    }
+                }
+            }.onFailure {
+                logger.i("批量获取token出错：${it.message ?: it.toString()}")
+            }.onSuccess {
+                logger.i("批量获取token结束")
+            }
+        }
+    }
+
+    OutlinedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateItem()
+    ) {
+        Accordion(
+            headerContent = {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                ) {
+                    Text("获取token", style = MedalTheme.typography.body1)
+                    Text("批量", style = MedalTheme.typography.label1)
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Button(
+                    Modifier.fillMaxWidth(),
+                    text = "执行",
                     onClick = {
                         state.value = true
                     }

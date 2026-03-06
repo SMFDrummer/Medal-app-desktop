@@ -25,7 +25,7 @@ data class User(
     val userNick: String? = null,
     val phone: String? = null,
     var password: String? = null,
-    val token: String? = null,
+    var token: String? = null,
     var activate: Boolean = true,
     var banned: Boolean = false,
     val properties: MutableMap<String, String> = mutableMapOf()
