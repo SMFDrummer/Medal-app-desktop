@@ -173,6 +173,7 @@ private fun FunctionList() {
         item { ChangePasswordCard() }
         item { ChangePasswordCardByToken() }
         item { ChangePasswordBatchCard() }
+        item { ChangePasswordByTokenBatchCard() }
 
         item { Spacer(Modifier) }
     }
@@ -634,6 +635,114 @@ private fun LazyItemScope.ChangePasswordBatchCard() {
 }
 
 @Composable
+private fun LazyItemScope.ChangePasswordByTokenBatchCard() {
+    var newPassWord by remember { mutableStateOf("") }
+    var isRandom by remember { mutableStateOf(false) }
+
+    val logger = koinViewModel<ExperimentViewModel>()
+    val scope = rememberCoroutineScope()
+    val state = rememberToggleState()
+
+    AccountDialog(
+        state = state,
+        functionName = "token 修改密码（批量）"
+    ) { userPath ->
+        scope.launch(Dispatchers.IO) {
+            val fileMutex = Mutex()
+
+            runCatching {
+                val file = File(userPath)
+                val data = file.readText().fromJson<Users>(
+                    JsonFeature.ImplicitNulls,
+                    JsonFeature.IgnoreUnknownKeys,
+                    JsonFeature.AllowTrailingComma
+                )
+
+                for (user in data.users.filter { it.activate && !it.banned && !it.token.isNullOrEmpty() }) {
+                    val randomPassword = generatePassword()
+                    runCatching {
+                        modifyPassword(
+                            user.token!!, user.userId.content, user.password!!, when (isRandom) {
+                                true -> randomPassword
+                                false -> newPassWord
+                            }
+                        )
+                    }.onFailure {
+                        logger.i("账号：${user.userId.content} 修改密码出错：${it.message ?: it.toString()}")
+                    }.onSuccess {
+                        logger.i("账号：${user.userId.content} 修改密码成功")
+                        user.password = randomPassword
+                        user.activate = false
+                    }
+
+                    fileMutex.withLock {
+                        file.atomicWriteText(
+                            jsonWith(
+                                JsonFeature.PrettyPrint,
+                                JsonFeature.ImplicitNulls,
+                                JsonFeature.IgnoreUnknownKeys
+                            ).encodeToString(data)
+                        )
+                    }
+                }
+            }.onFailure {
+                logger.i("批量 token 修改密码出错：${it.message ?: it.toString()}")
+            }.onSuccess {
+                logger.i("批量 token 修改密码结束")
+            }
+        }
+    }
+
+    OutlinedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateItem()
+    ) {
+        Accordion(
+            headerContent = {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                ) {
+                    Text("token 修改密码", style = MedalTheme.typography.body1)
+                    Text("批量", style = MedalTheme.typography.label1)
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier.weight(1f),
+                        value = newPassWord,
+                        enabled = !isRandom,
+                        onValueChange = { newPassWord = it },
+                        placeholder = { Text("新密码") },
+                    )
+                    Switch(
+                        checked = isRandom,
+                        onCheckedChange = { isRandom = it },
+                    )
+                    Text("随机", style = MedalTheme.typography.body1)
+                }
+                Button(
+                    Modifier.fillMaxWidth(),
+                    text = "执行",
+                    enabled = newPassWord.isNotEmpty() || isRandom,
+                    onClick = {
+                        state.value = true
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun LazyItemScope.GetTokenBatchCard() {
     val logger = koinViewModel<ExperimentViewModel>()
     val scope = rememberCoroutineScope()
@@ -641,7 +750,7 @@ private fun LazyItemScope.GetTokenBatchCard() {
 
     AccountDialog(
         state = state,
-        functionName = "修改密码（批量）"
+        functionName = "获取token（批量）"
     ) { userPath ->
         scope.launch(Dispatchers.IO) {
             val fileMutex = Mutex()
