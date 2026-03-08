@@ -14,6 +14,7 @@ import kotlinx.serialization.Required
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonPrimitive
+import network.provider.Game4399Provider
 import java.io.File
 
 @Serializable
@@ -42,6 +43,8 @@ suspend fun StrategyConfig.runWith(
         userProvider = when (channel) {
             -1 -> if (!phoneOrUserId.isNullOrEmpty())
                 IOSProvider(phoneOrUserId) else null
+            54 -> if (!phoneOrUserId.isNullOrEmpty() && !password.isNullOrEmpty())
+                Game4399Provider(phoneOrUserId, password) else null
             else -> if (!phoneOrUserId.isNullOrEmpty() && !password.isNullOrEmpty())
                 OfficialProvider(phoneOrUserId, password.getMD5()) else null
         },
@@ -79,6 +82,8 @@ suspend fun StrategyConfig.runWith(
                 userProvider = when (channel) {
                     -1 -> if (user.userId.content.isNotEmpty())
                         IOSProvider(user.userId.content) else null
+                    54 -> if (user.userId.content.isNotEmpty() && !user.password.isNullOrEmpty())
+                        Game4399Provider(user.userId.content, user.password!!) else null
                     else -> if (user.userId.content.isNotEmpty() && !user.password.isNullOrEmpty())
                         OfficialProvider(user.userId.content, user.password!!.getMD5()) else null
                 },

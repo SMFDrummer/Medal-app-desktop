@@ -8,16 +8,22 @@ plugins {
     id("com.nomanr.plugin.lumo")
     kotlin("plugin.serialization")
     id("com.google.devtools.ksp")
+    id("com.github.gmazzo.buildconfig")
 }
 
 group = "io.github.smfdrummer"
-version = "1.0-SNAPSHOT"
+version = "1.0.1"
 
 repositories {
     mavenLocal()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     google()
+}
+
+buildConfig {
+    packageName("io.github.smfdrummer.medal_app_desktop")
+    buildConfigField("VERSION", project.version.toString())
 }
 
 dependencies {
@@ -31,7 +37,7 @@ dependencies {
     implementation(compose.components.resources)
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
-    api("io.github.smfdrummer:medal-core:0.6")
+    api("io.github.smfdrummer:medal-core:0.7")
     api("com.nomanr:composables:1.1.1")
     implementation("io.github.fornewid:material-motion-compose-core:2.0.1")
 
@@ -62,7 +68,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "Medal-app-desktop"
-            packageVersion = "1.0.0"
+            packageVersion = project.version.toString()
             vendor = "SMFDrummer"
             description = "An all-purpose Plants vs Zombies 2 Chinese version tool. Compose for desktop distribution."
             copyright = "Copyright © 2025 SMFDrummer. All rights reserved."

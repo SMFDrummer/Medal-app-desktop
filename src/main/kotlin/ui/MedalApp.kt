@@ -20,6 +20,7 @@ import components.MedalTheme
 import components.components.*
 import components.components.snackbar.SnackbarHost
 import components.components.snackbar.rememberSnackbarHostState
+import io.github.smfdrummer.medal_app_desktop.BuildConfig
 import io.github.smfdrummer.medal_app_desktop.generated.resources.Res
 import io.github.smfdrummer.medal_app_desktop.generated.resources.ic_launcher
 import io.github.smfdrummer.medal_app_desktop.generated.resources.ic_launcher_round
@@ -68,7 +69,7 @@ fun MedalApp() {
             onDismissRequest = { medalAppLogoAlertDialogIsVisible = false },
             onConfirmClick = { medalAppLogoAlertDialogIsVisible = false },
             title = "Medal for Desktop",
-            text = "版本：V1.0-SNAPSHOT\n Contributed by SMFDrummer",
+            text = "版本：V${BuildConfig.VERSION}\n Contributed by SMFDrummer",
             icon = {
                 Icon(
                     modifier = Modifier.size(80.dp),
