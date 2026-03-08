@@ -3,7 +3,7 @@ name: Build and Release Desktop Distributions
 on:
   push:
     tags:
-      - '*-build.*'
+      - '*.*.*'
 
 jobs:
   build:
