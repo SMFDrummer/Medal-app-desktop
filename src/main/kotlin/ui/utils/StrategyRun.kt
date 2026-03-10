@@ -2,11 +2,13 @@ package io.github.smfdrummer.medal_app_desktop.ui.utils
 
 import arrow.atomic.AtomicInt
 import io.github.smfdrummer.network.getMD5
+import io.github.smfdrummer.network.provider.Game4399Provider
 import io.github.smfdrummer.network.provider.IOSProvider
 import io.github.smfdrummer.network.provider.OfficialProvider
 import io.github.smfdrummer.utils.json.JsonFeature
 import io.github.smfdrummer.utils.json.fromJson
 import io.github.smfdrummer.utils.json.jsonWith
+import io.github.smfdrummer.utils.json.primitive
 import io.github.smfdrummer.utils.strategy.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -14,7 +16,7 @@ import kotlinx.serialization.Required
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonPrimitive
-import network.provider.Game4399Provider
+import kotlinx.serialization.json.jsonPrimitive
 import java.io.File
 
 @Serializable
@@ -29,8 +31,17 @@ data class User(
     var token: String? = null,
     var activate: Boolean = true,
     var banned: Boolean = false,
+    var credential: Credential? = null,
     val properties: MutableMap<String, String> = mutableMapOf()
-)
+) {
+    @Serializable
+    data class Credential(
+        val pi: String,
+        val sk: String,
+        val ui: String
+    )
+}
+
 private val fileMutex = Mutex()
 
 suspend fun StrategyConfig.runWith(
@@ -43,8 +54,10 @@ suspend fun StrategyConfig.runWith(
         userProvider = when (channel) {
             -1 -> if (!phoneOrUserId.isNullOrEmpty())
                 IOSProvider(phoneOrUserId) else null
+
             54 -> if (!phoneOrUserId.isNullOrEmpty() && !password.isNullOrEmpty())
                 Game4399Provider(phoneOrUserId, password) else null
+
             else -> if (!phoneOrUserId.isNullOrEmpty() && !password.isNullOrEmpty())
                 OfficialProvider(phoneOrUserId, password.getMD5()) else null
         },
@@ -74,16 +87,29 @@ suspend fun StrategyConfig.runWith(
     )
 
     for (user in data.users.filter { it.activate && !it.banned }) {
-        if (additionalCutoff?.invoke(successCounter.get()) == true) { break }
+        if (additionalCutoff?.invoke(successCounter.get()) == true) {
+            break
+        }
         onUserChanged(user)
         val context = StrategyContext(contextCallback)
+            // region Added 2026/03/11 needs to be deleted.
+            .apply {
+                if (user.credential != null) with(user.credential!!) {
+                    variables["pi"] = primitive { pi }
+                    variables["sk"] = primitive { sk }
+                    variables["ui"] = primitive { ui }
+                }
+            }
+        // endregion
         runCatching {
             executeWith(
                 userProvider = when (channel) {
                     -1 -> if (user.userId.content.isNotEmpty())
                         IOSProvider(user.userId.content) else null
+
                     54 -> if (user.userId.content.isNotEmpty() && !user.password.isNullOrEmpty())
                         Game4399Provider(user.userId.content, user.password!!) else null
+
                     else -> if (user.userId.content.isNotEmpty() && !user.password.isNullOrEmpty())
                         OfficialProvider(user.userId.content, user.password!!.getMD5()) else null
                 },
@@ -130,6 +156,18 @@ suspend fun StrategyConfig.runWith(
 
         onContextAnalyze?.invoke(context, user)
 
+        // region Added 2026/03/11 needs to be deleted.
+        with(context.variables) {
+            if (context.hasCredential()) {
+                user.credential = User.Credential(
+                    pi = get("pi")!!.jsonPrimitive.content,
+                    sk = get("sk")!!.jsonPrimitive.content,
+                    ui = get("ui")!!.jsonPrimitive.content
+                )
+            }
+        }
+        // endregion
+
         fileMutex.withLock {
             file.atomicWriteText(
                 jsonWith(
@@ -147,7 +185,7 @@ suspend fun StrategyConfig.runWith(
     onStrategyComplete(true)
 }
 
-fun StrategyException.getErrorString() = when(this) {
+fun StrategyException.getErrorString() = when (this) {
     is StrategyException.UnknownRetryError -> "未知重试错误"
     is StrategyException.TemplateRenderError -> "模板渲染错误: $key"
     is StrategyException.InvalidActionValue -> "无效的操作值: $value"

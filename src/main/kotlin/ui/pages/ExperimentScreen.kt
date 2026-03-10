@@ -34,6 +34,7 @@ import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.ExperimentViewModel
 import io.github.smfdrummer.network.getMD5
 import io.github.smfdrummer.network.provider.IOSProvider
 import io.github.smfdrummer.network.service.login
+import io.github.smfdrummer.network.service.modifyPassword
 import io.github.smfdrummer.utils.json.*
 import io.github.smfdrummer.utils.strategy.*
 import kotlinx.coroutines.Dispatchers
@@ -42,8 +43,8 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
-import network.service.modifyPassword
 import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
 import ui.pages.StrategyCallbackCard
@@ -955,6 +956,11 @@ private fun LazyItemScope.InviteCard() {
                                     users.add(
                                         User(
                                             userId = primitive { udid },
+                                            credential = User.Credential(
+                                                pi = context.variables["pi"]!!.jsonPrimitive.content,
+                                                sk = context.variables["sk"]!!.jsonPrimitive.content,
+                                                ui = context.variables["ui"]!!.jsonPrimitive.content
+                                            )
                                         )
                                     )
 
