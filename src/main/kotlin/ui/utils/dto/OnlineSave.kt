@@ -64,6 +64,7 @@ fun OnlineSave.setProperties(user: User) {
         user.properties["太极木槿碎片"] = this["22001590"]?.q.toString()
         user.properties["毁灭菇碎片"] = this["22001610"]?.q.toString()
         user.properties["伏僵塔黄碎片"] = this["22001330"]?.q.toString()
+        user.properties["桑葚碎片"] = this["111170"]?.q.toString()
     }
     pl.associateBy { it.i }.apply {
         user.properties["超级机枪射手"] = this["200134"]?.s.toString()
