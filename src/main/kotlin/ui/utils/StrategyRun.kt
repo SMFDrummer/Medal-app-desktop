@@ -1,7 +1,6 @@
 package io.github.smfdrummer.medal_app_desktop.ui.utils
 
 import arrow.atomic.AtomicInt
-import io.github.smfdrummer.network.getMD5
 import io.github.smfdrummer.network.provider.Game4399Provider
 import io.github.smfdrummer.network.provider.IOSProvider
 import io.github.smfdrummer.network.provider.OfficialProvider
@@ -59,7 +58,7 @@ suspend fun StrategyConfig.runWith(
                 Game4399Provider(phoneOrUserId, password) else null
 
             else -> if (!phoneOrUserId.isNullOrEmpty() && !password.isNullOrEmpty())
-                OfficialProvider(phoneOrUserId, password.getMD5()) else null
+                OfficialProvider(phoneOrUserId, password) else null
         },
         context = context
     )
@@ -111,7 +110,7 @@ suspend fun StrategyConfig.runWith(
                         Game4399Provider(user.userId.content, user.password!!) else null
 
                     else -> if (user.userId.content.isNotEmpty() && !user.password.isNullOrEmpty())
-                        OfficialProvider(user.userId.content, user.password!!.getMD5()) else null
+                        OfficialProvider(user.userId.content, user.password!!) else null
                 },
                 isRandom = isRandom,
                 context = context

@@ -31,9 +31,8 @@ import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.刷邀请码_安
 import io.github.smfdrummer.medal_app_desktop.ui.utils.strategy.刷邀请码_苹果
 import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.CardStatus
 import io.github.smfdrummer.medal_app_desktop.ui.viewmodel.ExperimentViewModel
-import io.github.smfdrummer.network.getMD5
 import io.github.smfdrummer.network.provider.IOSProvider
-import io.github.smfdrummer.network.service.login
+import io.github.smfdrummer.network.service.loginNew
 import io.github.smfdrummer.network.service.modifyPassword
 import io.github.smfdrummer.utils.json.*
 import io.github.smfdrummer.utils.strategy.*
@@ -398,7 +397,7 @@ private fun LazyItemScope.ChangePasswordCard() {
                             val randomPassword = generatePassword()
                             runCatching {
                                 logger.i("登录账号：$phoneOrUserId")
-                                val (userId, token) = login(phoneOrUserId, password.getMD5())
+                                val (userId, token) = loginNew(phoneOrUserId, password)
                                 modifyPassword(
                                     token, userId, password, when (isRandom) {
                                         true -> randomPassword
@@ -553,7 +552,7 @@ private fun LazyItemScope.ChangePasswordBatchCard() {
                     val randomPassword = generatePassword()
                     runCatching {
                         logger.i("登录账号：${user.userId.content}")
-                        val (userId, token) = login(user.userId.content, user.password!!.getMD5())
+                        val (userId, token) = loginNew(user.userId.content, user.password!!)
                         modifyPassword(
                             token, userId, user.password!!, when (isRandom) {
                                 true -> randomPassword
@@ -767,7 +766,7 @@ private fun LazyItemScope.GetTokenBatchCard() {
                 for (user in data.users.filter { it.activate && !it.banned && !it.password.isNullOrEmpty() }) {
                     runCatching {
                         logger.i("登录账号：${user.userId.content}")
-                        val (userId, token) = login(user.userId.content, user.password!!.getMD5())
+                        val (userId, token) = loginNew(user.userId.content, user.password!!)
                         user.token = token
                     }.onFailure {
                         logger.i("账号：${user.userId.content} 获取token失败：${it.message ?: it.toString()}")
